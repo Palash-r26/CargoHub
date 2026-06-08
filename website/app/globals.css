@@ -413,6 +413,27 @@ h1, h2, h3, h4, h5, h6 {
 .animation-delay-4000 { animation-delay: 4s; }
 .animation-delay-6000 { animation-delay: 6s; }
 
+/* Dashboard Specific Animations */
+@keyframes truckSlide {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(70%); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes drawStroke {
+  0% { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.animate-truck-drive { animation: truckSlide 3s ease-in-out infinite alternate; }
+.animate-marquee { animation: marquee 40s linear infinite; }
+.animate-draw-stroke { animation: drawStroke 1.5s ease-out forwards; }
+
+
 /* ── Grain texture overlay ─────────────────────────────────────────────────── */
 .grain::before {
   content: "";
