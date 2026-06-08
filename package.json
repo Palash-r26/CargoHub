@@ -15,6 +15,7 @@
     "dev:customer": "npm run dev --workspace=frontend/customer-portal",
     "dev:admin": "npm run dev --workspace=frontend/admin-dashboard",
     "dev:b2b": "npm run dev --workspace=frontend/b2b-portal",
+    "dev:driver": "npm run start --workspace=driver-app",
     "build": "npm run build --workspaces",
     "lint": "npm run lint --workspaces --if-present"
   },
