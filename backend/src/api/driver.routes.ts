@@ -6,10 +6,10 @@
 
 import { Router } from 'express';
 import { db } from '../config/database';
-import { verifyFirebaseToken } from '../middleware/auth.middleware';
-import { requireRole } from '../middleware/role.middleware';
-import { requireVerifiedKyc } from '../middleware/kyc.middleware';
-import { validate } from '../middleware/validate.middleware';
+import { verifyFirebaseToken } from '../middlewares/auth.middleware';
+import { requireRole } from '../middlewares/role.middleware';
+import { requireVerifiedKyc } from '../middlewares/kyc.middleware';
+import { validate } from '../middlewares/validate.middleware';
 import { ToggleAvailabilitySchema, UpdateLocationSchema, NearbyDriversSchema } from '@cargohub/shared';
 
 const router = Router();

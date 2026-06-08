@@ -3,7 +3,7 @@
 // ============================================================================
 
 import { Router } from 'express';
-import { validate } from '../middleware/validate.middleware';
+import { validate } from '../middlewares/validate.middleware';
 import { FareEstimateSchema, calculateFare } from '@cargohub/shared';
 
 const router = Router();

@@ -4,14 +4,17 @@
   "private": true,
   "description": "CargoHub — Cross-platform cargo logistics platform",
   "workspaces": [
-    "shared",
+    "frontend/*",
     "backend",
-    "website"
+    "backend/src/shared",
+    "mobile-app/*"
   ],
   "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:customer\"",
     "dev:backend": "npm run dev --workspace=backend",
-    "dev:website": "npm run dev --workspace=website",
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:website\"",
+    "dev:customer": "npm run dev --workspace=frontend/customer-portal",
+    "dev:admin": "npm run dev --workspace=frontend/admin-dashboard",
+    "dev:b2b": "npm run dev --workspace=frontend/b2b-portal",
     "build": "npm run build --workspaces",
     "lint": "npm run lint --workspaces --if-present"
   },

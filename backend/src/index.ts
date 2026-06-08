@@ -9,24 +9,24 @@ import { createServer } from 'http';
 import cors from 'cors';
 import helmet from 'helmet';
 import { Server as SocketServer } from 'socket.io';
-import type { ClientToServerEvents, ServerToClientEvents } from '@cargohub/shared';
+import type { ClientToServerEvents, ServerToClientEvents } from './shared';
 
 import { corsOptions } from './config/cors';
-import { platformMiddleware } from './middleware/platform.middleware';
-import { errorHandler } from './middleware/error.middleware';
+import { platformMiddleware } from './middlewares/platform.middleware';
+import { errorHandler } from './middlewares/error.middleware';
 
 // Routes
-import authRoutes from './routes/auth.routes';
-import bookingRoutes from './routes/booking.routes';
-import driverRoutes from './routes/driver.routes';
-import fareRoutes from './routes/fare.routes';
-import paymentRoutes from './routes/payment.routes';
-import ratingRoutes from './routes/rating.routes';
-import adminRoutes from './routes/admin.routes';
-import businessRoutes from './routes/business.routes';
+import authRoutes from './api/auth.routes';
+import bookingRoutes from './api/booking.routes';
+import driverRoutes from './api/driver.routes';
+import fareRoutes from './api/fare.routes';
+import paymentRoutes from './api/payment.routes';
+import ratingRoutes from './api/rating.routes';
+import adminRoutes from './api/admin.routes';
+import businessRoutes from './api/business.routes';
 
 // Socket
-import { setupSocketHandlers } from './socket';
+import { setupSocketHandlers } from './sockets';
 
 const app = express();
 const httpServer = createServer(app);

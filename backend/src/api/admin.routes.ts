@@ -8,9 +8,9 @@
 import { Router } from 'express';
 import { v4 as uuid } from 'uuid';
 import { db } from '../config/database';
-import { verifyFirebaseToken } from '../middleware/auth.middleware';
-import { requireRole } from '../middleware/role.middleware';
-import { validate } from '../middleware/validate.middleware';
+import { verifyFirebaseToken } from '../middlewares/auth.middleware';
+import { requireRole } from '../middlewares/role.middleware';
+import { validate } from '../middlewares/validate.middleware';
 import { KycDecisionSchema, DriverSuspensionSchema, AdminCancelBookingSchema } from '@cargohub/shared';
 
 const router = Router();
