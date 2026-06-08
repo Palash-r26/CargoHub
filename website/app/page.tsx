@@ -130,7 +130,7 @@ export default function LandingPage() {
       </nav>
 
       {/* ── Hero Section ───────────────────────────────────────────────── */}
-      <section className="relative min-h-screen flex flex-col justify-center pt-24 pb-16 overflow-hidden" style={{ background: "var(--bg-primary)" }}>
+      <section className="relative min-h-screen flex flex-col justify-center pt-32 pb-24 overflow-hidden" style={{ background: "var(--bg-primary)" }}>
         {/* Curved highlight blob shape representing WareHub background curve */}
         <div className="absolute top-0 right-0 w-[60vw] h-[80vh] rounded-bl-[20vw] bg-[#FFF3EC] pointer-events-none z-0" />
         
@@ -354,7 +354,7 @@ export default function LandingPage() {
             {features.map((feature, i) => (
               <motion.div
                 key={feature.title}
-                className="glass-card p-6"
+                className="glass-card p-6 flex flex-col h-full"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -390,7 +390,7 @@ export default function LandingPage() {
             {vehicles.map((v, i) => (
               <motion.div
                 key={v.type}
-                className="card card-hover cursor-pointer text-center"
+                className="card card-hover cursor-pointer text-center flex flex-col h-full justify-between gap-2"
                 onClick={() => setActiveVehicle(i)}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
