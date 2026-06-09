@@ -11,6 +11,7 @@
     }
   },
   "include": ["src/**/*"],
+  "exclude": ["src/shared/**/*", "src/shared"],
   "references": [
     { "path": "./src/shared" }
   ]
