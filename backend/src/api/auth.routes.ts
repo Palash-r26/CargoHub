@@ -8,7 +8,7 @@ import { v4 as uuid } from 'uuid';
 import { db } from '../config/database';
 import { auth } from '../config/firebase';
 import { sendSMS } from '../config/services';
-import { verifyFirebaseToken } from '../middlewares/auth.middleware';
+import { verifyFirebaseToken, decodeFirebaseToken } from '../middlewares/auth.middleware';
 import { requireRole } from '../middlewares/role.middleware';
 import { validate } from '../middlewares/validate.middleware';
 import { RegisterUserSchema, RegisterDriverSchema, RegisterTokensSchema } from '@cargohub/shared';
@@ -121,7 +121,7 @@ router.post('/verify-otp', async (req, res) => {
 // ── Registration & Profile ───────────────────────────────────────────────────
 
 // Register new user
-router.post('/register-user', verifyFirebaseToken, validate(RegisterUserSchema), (req, res) => {
+router.post('/register-user', decodeFirebaseToken, validate(RegisterUserSchema), (req, res) => {
   const firebaseUid = req.user!.uid;
   const existing = db.users.findByFirebaseUid(firebaseUid);
   if (existing) {
@@ -146,7 +146,7 @@ router.post('/register-user', verifyFirebaseToken, validate(RegisterUserSchema),
 });
 
 // Register new driver
-router.post('/register-driver', verifyFirebaseToken, validate(RegisterDriverSchema), (req, res) => {
+router.post('/register-driver', decodeFirebaseToken, validate(RegisterDriverSchema), (req, res) => {
   const firebaseUid = req.user!.uid;
   const existing = db.users.findByFirebaseUid(firebaseUid);
   if (existing) {
