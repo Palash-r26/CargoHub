@@ -5,8 +5,9 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { 
   LayoutDashboard, PackagePlus, MapPin, ClipboardList, 
-  Wallet, Star, HeadphonesIcon, Settings, LogOut 
+  Wallet, Star, HeadphonesIcon, Settings, LogOut, ChevronLeft, ChevronRight
 } from "lucide-react";
+import { useDashboardStore } from "@/store/dashboardStore";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Overview", route: "/dashboard" },
@@ -21,39 +22,61 @@ const navItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const { isSidebarCollapsed, toggleSidebar } = useDashboardStore();
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-[260px] glass z-50 flex flex-col" style={{ 
-      background: "var(--bg-primary)",
-      borderRight: "1px solid var(--border-subtle)" 
-    }}>
+    <motion.aside 
+      animate={{ width: isSidebarCollapsed ? 80 : 260 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      className="fixed left-0 top-0 h-screen glass z-50 flex flex-col" 
+      style={{ 
+        background: "var(--bg-primary)",
+        borderRight: "1px solid var(--border-subtle)" 
+      }}
+    >
+      {/* Collapse Toggle */}
+      <button 
+        onClick={toggleSidebar}
+        className="absolute -right-3 top-6 bg-white dark:bg-gray-800 border shadow-sm rounded-full w-6 h-6 flex items-center justify-center z-50 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700"
+        style={{ borderColor: "var(--border-subtle)", color: "var(--text-secondary)" }}
+      >
+        {isSidebarCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+      </button>
+
       {/* Logo Area */}
-      <div className="h-20 flex items-center px-6 border-b" style={{ borderColor: "var(--border-subtle)" }}>
+      <div className={`h-20 flex items-center border-b ${isSidebarCollapsed ? "justify-center px-0" : "px-6"}`} style={{ borderColor: "var(--border-subtle)" }}>
         <motion.div 
           className="flex items-center gap-3"
           initial={{ x: -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm shadow-sm" style={{ background: "linear-gradient(135deg, var(--brand-primary), var(--brand-secondary))" }}>
+          <div className="w-8 h-8 flex-shrink-0 rounded-lg flex items-center justify-center text-sm shadow-sm" style={{ background: "linear-gradient(135deg, var(--brand-primary), var(--brand-secondary))" }}>
             🚛
           </div>
-          <span className="font-display text-xl font-bold tracking-tight" style={{ color: "var(--text-primary)" }}>
-            CargoHub
-          </span>
+          {!isSidebarCollapsed && (
+            <motion.span 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              className="font-display text-xl font-bold tracking-tight whitespace-nowrap" 
+              style={{ color: "var(--text-primary)" }}
+            >
+              CargoHub
+            </motion.span>
+          )}
         </motion.div>
       </div>
 
       {/* Nav Links */}
-      <div className="flex-1 overflow-y-auto py-6 px-4 flex flex-col gap-2">
+      <div className={`flex-1 overflow-y-auto py-6 flex flex-col gap-2 ${isSidebarCollapsed ? "px-2" : "px-4"}`}>
         {navItems.map((item) => {
-          const isActive = pathname === item.route;
+          const isActive = pathname === item.route || pathname.startsWith(item.route + "/");
           return (
             <Link key={item.route} href={item.route}>
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all relative overflow-hidden"
+                className={`flex items-center transition-all relative overflow-hidden ${isSidebarCollapsed ? "justify-center w-12 h-12 mx-auto rounded-xl" : "gap-3 px-4 py-3 rounded-xl"}`}
                 style={{
                   background: isActive ? "rgba(2, 89, 221, 0.08)" : "transparent",
                   color: isActive ? "var(--brand-primary)" : "var(--text-secondary)",
@@ -67,8 +90,10 @@ export default function Sidebar() {
                     style={{ background: "var(--brand-secondary)" }}
                   />
                 )}
-                <item.icon className="w-5 h-5" style={{ color: isActive ? "var(--brand-primary)" : "var(--text-muted)" }} />
-                <span className="text-sm">{item.label}</span>
+                <item.icon className="w-5 h-5 flex-shrink-0" style={{ color: isActive ? "var(--brand-primary)" : "var(--text-muted)" }} />
+                {!isSidebarCollapsed && (
+                  <span className="text-sm whitespace-nowrap">{item.label}</span>
+                )}
               </motion.div>
             </Link>
           );
@@ -76,30 +101,36 @@ export default function Sidebar() {
       </div>
 
       {/* Bottom Stats / User */}
-      <div className="p-4 border-t" style={{ borderColor: "var(--border-subtle)" }}>
-        <div className="mb-4 p-3 rounded-xl" style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-subtle)" }}>
-          <div className="flex justify-between items-center mb-1">
-            <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>Wallet</span>
-            <span className="text-xs font-bold" style={{ color: "var(--brand-primary)" }}>₹250</span>
+      <div className={`p-4 border-t ${isSidebarCollapsed ? "flex flex-col items-center" : ""}`} style={{ borderColor: "var(--border-subtle)" }}>
+        {!isSidebarCollapsed && (
+          <div className="mb-4 p-3 rounded-xl" style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-subtle)" }}>
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>Wallet</span>
+              <span className="text-xs font-bold" style={{ color: "var(--brand-primary)" }}>₹250</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>Active</span>
+              <span className="text-xs font-bold flex items-center gap-1" style={{ color: "var(--brand-secondary)" }}>
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse-ring" style={{ background: "var(--brand-secondary)" }}></span>
+                2 bookings
+              </span>
+            </div>
           </div>
-          <div className="flex justify-between items-center">
-            <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>Active</span>
-            <span className="text-xs font-bold flex items-center gap-1" style={{ color: "var(--brand-secondary)" }}>
-              <span className="w-1.5 h-1.5 rounded-full animate-pulse-ring" style={{ background: "var(--brand-secondary)" }}></span>
-              2 bookings
-            </span>
-          </div>
-        </div>
+        )}
 
-        <button className="flex items-center gap-3 px-4 py-2 w-full text-left rounded-xl transition-colors hover:bg-gray-50" style={{ color: "var(--text-secondary)" }}>
-          <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center font-bold text-xs" style={{ color: "var(--brand-primary)" }}>R</div>
-          <div className="flex-1">
-            <p className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>Rahul K.</p>
-            <p className="text-xs" style={{ color: "var(--text-muted)" }}>Customer</p>
-          </div>
-          <LogOut className="w-4 h-4" style={{ color: "var(--text-muted)" }} />
+        <button className={`flex items-center transition-colors hover:bg-gray-50 dark:hover:bg-gray-800 ${isSidebarCollapsed ? "justify-center w-10 h-10 rounded-full" : "gap-3 px-4 py-2 w-full text-left rounded-xl"}`} style={{ color: "var(--text-secondary)" }}>
+          <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center font-bold text-xs flex-shrink-0" style={{ color: "var(--brand-primary)" }}>R</div>
+          {!isSidebarCollapsed && (
+            <>
+              <div className="flex-1 whitespace-nowrap overflow-hidden">
+                <p className="text-sm font-semibold truncate" style={{ color: "var(--text-primary)" }}>Rahul K.</p>
+                <p className="text-xs truncate" style={{ color: "var(--text-muted)" }}>Customer</p>
+              </div>
+              <LogOut className="w-4 h-4 flex-shrink-0" style={{ color: "var(--text-muted)" }} />
+            </>
+          )}
         </button>
       </div>
-    </aside>
+    </motion.aside>
   );
 }

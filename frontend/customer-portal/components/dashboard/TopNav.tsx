@@ -2,15 +2,23 @@
 
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { Bell, Search, MapPin } from "lucide-react";
+import { Bell, Search, MapPin, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 export default function TopNav() {
   const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   
   // Create breadcrumb from pathname
   const paths = pathname.split('/').filter(Boolean);
   const currentPath = paths[paths.length - 1] || 'overview';
   const title = currentPath.charAt(0).toUpperCase() + currentPath.slice(1);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <div className="sticky top-0 z-40 w-full glass" style={{ borderBottom: "1px solid var(--border-subtle)", borderRadius: 0, borderTop: 0, borderLeft: 0, borderRight: 0 }}>
@@ -49,13 +57,27 @@ export default function TopNav() {
             />
           </div>
           
-          <button className="relative w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:bg-gray-100" style={{ border: "1px solid var(--border-subtle)", background: "var(--bg-primary)" }}>
+          {mounted && (
+            <button 
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="relative w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:bg-gray-100 dark:hover:bg-gray-800" 
+              style={{ border: "1px solid var(--border-subtle)", background: "var(--bg-primary)" }}
+            >
+              {theme === "dark" ? (
+                <Sun className="w-5 h-5" style={{ color: "var(--text-secondary)" }} />
+              ) : (
+                <Moon className="w-5 h-5" style={{ color: "var(--text-secondary)" }} />
+              )}
+            </button>
+          )}
+
+          <button className="relative w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:bg-gray-100 dark:hover:bg-gray-800" style={{ border: "1px solid var(--border-subtle)", background: "var(--bg-primary)" }}>
             <Bell className="w-5 h-5" style={{ color: "var(--text-secondary)" }} />
             <motion.div 
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: "spring", delay: 0.5 }}
-              className="absolute top-0 right-0 w-3 h-3 rounded-full border-2 border-white"
+              className="absolute top-0 right-0 w-3 h-3 rounded-full border-2 border-white dark:border-gray-900"
               style={{ background: "var(--brand-secondary)" }}
             />
           </button>

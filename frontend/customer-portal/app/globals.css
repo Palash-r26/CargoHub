@@ -75,6 +75,37 @@
   --duration-slow: 450ms;
 }
 
+.dark {
+  /* Background Layers (Premium Deep Navy/Slate Base) */
+  --bg-primary: #0B1120;
+  --bg-secondary: #0F172A;
+  --bg-tertiary: #1E293B;
+  --bg-card: #0F172A;
+  --bg-card-solid: #0F172A;
+  --bg-glass: rgba(15, 23, 42, 0.85);
+  --bg-glass-dark: rgba(15, 23, 42, 0.6);
+
+  /* Text Colors */
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --text-accent: #3B82F6;
+
+  /* Border */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.15);
+  --border-active: rgba(255, 255, 255, 0.3);
+  --border-card: rgba(255, 255, 255, 0.06);
+
+  /* Shadows */
+  --shadow-xs: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 24px 48px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 6px 24px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-card-hover: 0 16px 48px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(59, 130, 246, 0.1);
+}
+
 /* ── Global Reset ──────────────────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;

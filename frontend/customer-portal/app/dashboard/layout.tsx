@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import Sidebar from "@/components/dashboard/Sidebar";
 import TopNav from "@/components/dashboard/TopNav";
+import { useDashboardStore } from "@/store/dashboardStore";
 
 export default function DashboardLayout({
   children,
@@ -11,6 +12,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const { isSidebarCollapsed } = useDashboardStore();
 
   return (
     <div className="min-h-screen bg-mesh bg-grid relative overflow-hidden" style={{ background: "var(--bg-primary)" }}>
@@ -24,7 +26,11 @@ export default function DashboardLayout({
       <Sidebar />
 
       {/* Main Content Area */}
-      <div className="pl-[260px] flex flex-col min-h-screen relative z-10">
+      <motion.div 
+        animate={{ paddingLeft: isSidebarCollapsed ? 80 : 260 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="flex flex-col min-h-screen relative z-10"
+      >
         <TopNav />
         
         {/* Page Content with AnimatePresence for layout transitions */}
@@ -42,7 +48,7 @@ export default function DashboardLayout({
             </motion.main>
           </AnimatePresence>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
