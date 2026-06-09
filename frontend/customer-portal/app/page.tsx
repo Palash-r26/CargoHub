@@ -8,6 +8,7 @@ import {
   CheckCircle2, IndianRupee, Navigation, Smartphone, Play, Image as ImageIcon
 } from "lucide-react";
 import Image from "next/image";
+import { HeroIllustration } from "../components/HeroIllustration";
 import img1 from "./elements/1.png";
 import img2 from "./elements/2.png";
 import img3 from "./elements/3.png";
@@ -209,90 +210,25 @@ export default function LandingPage() {
               </div>
             </motion.div>
 
-            {/* Right: Hero Visual Frame Placeholder */}
-            <motion.div
-              className="lg:col-span-6 w-full"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <div className="relative w-full aspect-[1.1] scale-100 lg:scale-[1.15] lg:translate-x-[2%]">
-
-                {/* SVG Dashed Line */}
-                <svg className="absolute inset-0 w-full h-full z-0 overflow-visible" viewBox="0 0 100 100">
-                  <path d="M 25 82 Q 40 88, 55 80 T 80 75" fill="none" stroke="#0259DD" strokeWidth="0.5" strokeDasharray="1.5 1.5" className="opacity-80" />
-                  {/* Arrowheads */}
-                  <path d="M 38 84.5 L 40 85 L 39 83" fill="none" stroke="#0259DD" strokeWidth="0.5" />
-                  <path d="M 67 78.5 L 69 78 L 68 76" fill="none" stroke="#0259DD" strokeWidth="0.5" />
-                  {/* Endpoint at scale */}
-                  <circle cx="80" cy="75" r="0.6" fill="#0259DD" />
-                </svg>
-
-                {/* Back Layer */}
-                <div className="absolute top-[10%] right-[0%] w-[18%] z-0">
-                  <Image src={img11} alt="Rack" className="w-full h-auto object-contain drop-shadow-sm" />
-                </div>
-                <div className="absolute top-[22%] right-[-6%] w-[18%] z-10">
-                  <Image src={img11} alt="Rack" className="w-full h-auto object-contain drop-shadow-sm" />
-                </div>
-
-                {/* Warehouse */}
-                <div className="absolute top-[15%] right-[6%] w-[60%] z-20">
-                  <Image src={img10} alt="Warehouse" className="w-full h-auto object-contain drop-shadow-xl" />
-                </div>
-
-                {/* Container */}
-                <div className="absolute bottom-[45%] right-[90%] w-[32%] z-10">
-                  <Image src={img12} alt="Container" className="w-full h-auto object-contain drop-shadow-md" />
-                </div>
-
-                {/* Forklift */}
-                <div className="absolute top-[32%] left-[12%] w-[25%] z-20">
-                  <Image src={img3} alt="Forklift" className="w-full h-auto object-contain drop-shadow-md" />
-                </div>
-
-                {/* Worker with manual stacker */}
-                <div className="absolute top-[52%] left-[55%] w-[10%] z-30">
-                  <Image src={img6} alt="Worker" className="w-full h-auto object-contain drop-shadow-md" />
-                </div>
-
-                {/* Small Truck */}
-                <div className="absolute bottom-[32%] left-[22%] w-[25%] z-30">
-                  <Image src={img2} alt="Small Truck" className="w-full h-auto object-contain drop-shadow-lg" />
-                </div>
-
-                {/* Big Truck */}
-                <div className="absolute bottom-[5%] left-[5%] w-[42%] z-40">
-                  <Image src={img1} alt="Big Truck" className="w-full h-auto object-contain drop-shadow-2xl" />
-                </div>
-
-                {/* Worker with pallet jack */}
-                <div className="absolute bottom-[18%] left-[45%] w-[15%] z-40">
-                  <Image src={img5} alt="Worker Pallet Jack" className="w-full h-auto object-contain drop-shadow-lg" />
-                </div>
-
-                {/* Scale */}
-                <div className="absolute bottom-[10%] right-[18%] w-[12%] z-40">
-                  <Image src={img4} alt="Scale" className="w-full h-auto object-contain drop-shadow-lg" />
-                </div>
-
-                {/* Empty Pallets */}
-                <div className="absolute bottom-[22%] right-[2%] w-[14%] z-30">
-                  <Image src={img7} alt="Pallets" className="w-full h-auto object-contain drop-shadow-md" />
-                </div>
-
-                {/* Pallet with Boxes near Big Truck */}
-                <div className="absolute bottom-[2%] left-[0%] w-[12%] z-50">
-                  <Image src={img8} alt="Boxes" className="w-full h-auto object-contain drop-shadow-md" />
-                </div>
-
-                {/* Additional Pallet for Forklift */}
-                <div className="absolute top-[48%] left-[38%] w-[8%] z-30">
-                  <Image src={img8} alt="Forklift Boxes" className="w-full h-auto object-contain drop-shadow-sm" />
-                </div>
-
-              </div>
-            </motion.div>
+            {/* Right: Animated Hero Illustration */}
+            <div className="lg:col-span-6 w-full">
+              <HeroIllustration
+                images={{
+                  img1,
+                  img2,
+                  img3,
+                  img4,
+                  img5,
+                  img6,
+                  img7,
+                  img8,
+                  img9,
+                  img10,
+                  img11,
+                  img12,
+                }}
+              />
+            </div>
           </div>
 
           {/* Bottom feature strip matching the WareHub bottom features */}
