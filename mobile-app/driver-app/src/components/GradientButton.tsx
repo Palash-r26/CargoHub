@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   container: { borderRadius: theme.radius.full, overflow: 'hidden', shadowColor: theme.colors.brand.primary, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.35, shadowRadius: 20, elevation: 8 },
   gradient: { paddingVertical: 14, paddingHorizontal: 32, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
   text: { color: 'white', fontFamily: theme.typography.bodySemibold.fontFamily, fontSize: 15, letterSpacing: 0.5 },
-  secondaryButton: { paddingVertical: 14, paddingHorizontal: 32, borderRadius: theme.radius.full, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, backgroundColor: 'rgba(255,255,255,0.7)', borderWidth: 1.5, borderColor: theme.colors.border.subtle },
+  secondaryButton: { paddingVertical: 14, paddingHorizontal: 32, borderRadius: theme.radius.full, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, backgroundColor: 'rgba(22, 24, 36, 0.6)', borderWidth: 1.5, borderColor: theme.colors.border.subtle },
   secondaryText: { color: theme.colors.text.primary, fontFamily: theme.typography.bodySemibold.fontFamily, fontSize: 15 },
   disabled: { opacity: 0.6 }
 });

@@ -20,7 +20,11 @@ export default function App() {
         console.warn(e);
       } finally {
         setFontsLoaded(true);
-        SplashScreen.hideAsync();
+        try {
+          await SplashScreen.hideAsync();
+        } catch (splashErr) {
+          console.warn('SplashScreen hide failed:', splashErr);
+        }
       }
     }
     prepare();
@@ -29,7 +33,7 @@ export default function App() {
   if (!fontsLoaded) return null;
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{ flex: 1 }}>
       <StatusBar style="dark" />
       <AuthProvider>
         <SocketProvider>
@@ -41,3 +45,6 @@ export default function App() {
     </SafeAreaProvider>
   );
 }
+// Trigger TS server reload
+
+

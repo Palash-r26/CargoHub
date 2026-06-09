@@ -8,6 +8,7 @@ import { theme } from '../theme/theme';
 import { useAuth } from '../context/AuthContext';
 import { useDriver } from '../context/DriverContext';
 
+import { LandingScreen } from '../screens/LandingScreen';
 import { LoginScreen } from '../screens/LoginScreen';
 import { RoleSelectScreen } from '../screens/RoleSelectScreen';
 import { KycUploadScreen } from '../screens/KycUploadScreen';
@@ -48,6 +49,7 @@ export const Navigation = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {!user ? (
           <>
+            <Stack.Screen name="Landing" component={LandingScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="RoleSelect" component={RoleSelectScreen} />
           </>
@@ -55,12 +57,12 @@ export const Navigation = () => {
           <>
             {user.role === 'USER' ? (
               <Stack.Screen name="RoleSelect" component={RoleSelectScreen} />
-            ) : driver?.kycStatus !== 'VERIFIED' && driver?.kycStatus !== 'PENDING' ? (
-              <Stack.Screen name="KycUpload" component={KycUploadScreen} />
-            ) : activeBooking ? (
-              <Stack.Screen name="Job" component={JobScreen} />
             ) : (
-              <Stack.Screen name="Main" component={TabNavigator} />
+              <>
+                <Stack.Screen name="Main" component={TabNavigator} />
+                <Stack.Screen name="KycUpload" component={KycUploadScreen} />
+                <Stack.Screen name="Job" component={JobScreen} />
+              </>
             )}
           </>
         )}

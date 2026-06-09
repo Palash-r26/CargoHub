@@ -3,52 +3,57 @@
 // Derived from website's globals.css tokens
 // ============================================================================
 
+// ============================================================================
+// CargoHub Driver App — Design System Theme
+// Derived from website's globals.css tokens & Stitch design spec
+// ============================================================================
+
 export const colors = {
   // Brand Colors
   brand: {
-    primary: '#0259DD',
-    primaryLight: '#4F8DF7',
-    primaryDark: '#0045B5',
-    secondary: '#FF6648',
-    accent: '#FF6648',
-    success: '#10B981',
-    danger: '#EF4444',
-    warning: '#F59E0B',
+    primary: '#D85A30', // Coral primary
+    primaryLight: '#FF8C68',
+    primaryDark: '#B03D1A',
+    secondary: '#38BDF8', // Light blue success/active
+    accent: '#D85A30',
+    success: '#38BDF8',
+    danger: '#E53935', // Red
+    warning: '#F5A623', // Amber
   },
 
   // Gradient Stops
   gradient: {
-    start: '#0259DD',
-    mid: '#4F8DF7',
-    end: '#FF6648',
-    coralStart: '#FF6648',
-    coralEnd: '#E5533A',
+    start: '#D85A30',
+    mid: '#FF8C68',
+    end: '#38BDF8',
+    coralStart: '#D85A30',
+    coralEnd: '#B03D1A',
   },
 
-  // Background Layers (Soft Warm Cream Base)
+  // Background Layers (Premium Dark Navy)
   background: {
-    primary: '#FFFDFB',
-    secondary: '#FFF2EC',
-    tertiary: '#F8F1EB',
-    card: '#FFFFFF',
-    mesh: '#FFF5EF', // Equivalent for isometric mesh back
+    primary: '#0D0F1A',
+    secondary: '#11131E',
+    tertiary: '#191B26',
+    card: '#161824',
+    mesh: '#0D0F1A',
   },
 
   // Text Colors
   text: {
-    primary: '#0B1C3F',
-    secondary: '#344A75',
-    muted: '#6C82AB',
-    accent: '#0259DD',
-    inverse: '#FFFFFF',
+    primary: '#F0F0F0', // Near white
+    secondary: '#C5C7D0', // Soft grey
+    muted: '#6B7280', // Grey
+    accent: '#D85A30',
+    inverse: '#0D0F1A',
   },
 
   // Borders
   border: {
-    subtle: 'rgba(2, 89, 221, 0.08)',
-    hover: 'rgba(2, 89, 221, 0.25)',
-    active: 'rgba(2, 89, 221, 0.5)',
-    card: 'rgba(11, 28, 63, 0.06)',
+    subtle: '#2A2D3E',
+    hover: '#3A3E54',
+    active: '#D85A30',
+    card: '#2A2D3E',
   },
 };
 
@@ -73,42 +78,42 @@ export const radius = {
 
 export const shadows = {
   xs: {
-    shadowColor: '#0B1C3F',
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 8,
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
     elevation: 2,
   },
   sm: {
-    shadowColor: '#0B1C3F',
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.05,
-    shadowRadius: 16,
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
     elevation: 4,
   },
   md: {
-    shadowColor: '#0B1C3F',
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.07,
-    shadowRadius: 32,
+    shadowOpacity: 0.4,
+    shadowRadius: 16,
     elevation: 8,
   },
   card: {
-    shadowColor: '#0B1C3F',
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.04,
-    shadowRadius: 24,
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
     elevation: 5,
   },
   glow: {
-    shadowColor: '#0259DD',
+    shadowColor: '#D85A30',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.35,
     shadowRadius: 20,
     elevation: 10,
   },
   glowCoral: {
-    shadowColor: '#FF6648',
+    shadowColor: '#D85A30',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.35,
     shadowRadius: 20,

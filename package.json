@@ -21,6 +21,12 @@
   },
   "devDependencies": {
     "concurrently": "^9.1.2",
+    "expo": "~52.0.25",
+    "expo-asset": "~11.0.5",
     "typescript": "^5.7.3"
+  },
+  "overrides": {
+    "react-native": "0.76.9",
+    "@types/react": "~18.3.12"
   }
 }

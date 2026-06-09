@@ -41,20 +41,20 @@ export const IncomingJobModal: React.FC<IncomingJobProps> = ({ visible, job, onA
 };
 
 const styles = StyleSheet.create({
-  overlay: { flex: 1, backgroundColor: 'rgba(11, 28, 63, 0.6)', justifyContent: 'flex-end' },
-  card: { backgroundColor: theme.colors.background.primary, borderTopLeftRadius: theme.radius.xxl, borderTopRightRadius: theme.radius.xxl, padding: theme.spacing.xl, paddingBottom: 40 },
-  headerTitle: { fontFamily: theme.typography.display.fontFamily, fontSize: 24, color: theme.colors.text.primary, textAlign: 'center' },
+  overlay: { flex: 1, backgroundColor: 'rgba(13, 15, 26, 0.85)', justifyContent: 'flex-end' },
+  card: { backgroundColor: theme.colors.background.card, borderTopLeftRadius: theme.radius.xxl, borderTopRightRadius: theme.radius.xxl, padding: theme.spacing.xl, paddingBottom: 40, borderTopWidth: 1, borderTopColor: theme.colors.border.subtle },
+  headerTitle: { fontFamily: theme.typography.display.fontFamily, fontSize: 24, fontWeight: 'bold', color: theme.colors.text.primary, textAlign: 'center' },
   timerContainer: { alignItems: 'center', marginVertical: 24 },
-  routeContainer: { backgroundColor: theme.colors.background.card, borderRadius: theme.radius.lg, padding: theme.spacing.lg, borderWidth: 1, borderColor: theme.colors.border.subtle, marginBottom: 20 },
+  routeContainer: { backgroundColor: theme.colors.background.primary, borderRadius: theme.radius.lg, padding: theme.spacing.lg, borderWidth: 1, borderColor: theme.colors.border.subtle, marginBottom: 20 },
   routeItem: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
   routeLine: { width: 2, height: 24, backgroundColor: theme.colors.border.subtle, marginLeft: 9, marginVertical: 4 },
   routeText: { flex: 1 },
   routeLabel: { fontFamily: theme.typography.bodySemibold.fontFamily, fontSize: 11, color: theme.colors.text.muted },
   addressText: { fontFamily: theme.typography.bodyMedium.fontFamily, fontSize: 14, color: theme.colors.text.primary, marginTop: 2 },
   detailsGrid: { flexDirection: 'row', gap: 12, marginBottom: 32 },
-  detailItem: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, backgroundColor: theme.colors.background.secondary, padding: 16, borderRadius: theme.radius.lg },
-  detailText: { fontFamily: theme.typography.bodySemibold.fontFamily, fontSize: 14, color: theme.colors.text.primary },
-  fareText: { fontFamily: theme.typography.mono.fontFamily, fontSize: 18, fontWeight: 'bold', color: theme.colors.brand.success },
+  detailItem: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, backgroundColor: theme.colors.background.tertiary, padding: 16, borderRadius: theme.radius.lg, borderWidth: 1, borderColor: theme.colors.border.subtle },
+  detailText: { fontFamily: theme.typography.bodySemibold.fontFamily, fontSize: 14, color: theme.colors.text.secondary },
+  fareText: { fontFamily: theme.typography.mono.fontFamily, fontSize: 22, fontWeight: 'bold', color: theme.colors.brand.secondary },
   actions: { flexDirection: 'row', gap: 16 },
   btn: { flex: 1 },
 });

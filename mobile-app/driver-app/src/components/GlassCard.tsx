@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     borderRadius: theme.radius.xl,
     padding: theme.spacing.lg,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.8)',
+    borderColor: theme.colors.border.subtle,
     ...theme.shadows.card,
   },
 });

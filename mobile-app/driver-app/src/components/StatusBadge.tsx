@@ -11,13 +11,13 @@ interface StatusBadgeProps {
 
 const getBadgeConfig = (status: BadgeStatus) => {
   switch (status) {
-    case 'pending': return { bg: 'rgba(245, 158, 11, 0.15)', text: '#D97706', border: 'rgba(245,158,11,0.2)' };
-    case 'accepted': return { bg: 'rgba(59, 130, 246, 0.15)', text: '#2563EB', border: 'rgba(59,130,246,0.2)' };
-    case 'arriving': return { bg: 'rgba(139, 92, 246, 0.15)', text: '#7C3AED', border: 'rgba(139,92,246,0.2)' };
-    case 'transit': return { bg: 'rgba(14, 165, 233, 0.15)', text: '#0284C7', border: 'rgba(14,165,233,0.2)' };
-    case 'delivered': case 'verified': return { bg: 'rgba(16, 185, 129, 0.15)', text: '#059669', border: 'rgba(16,185,129,0.2)' };
-    case 'cancelled': case 'rejected': return { bg: 'rgba(239, 68, 68, 0.15)', text: '#DC2626', border: 'rgba(239,68,68,0.2)' };
-    default: return { bg: 'rgba(107, 114, 128, 0.15)', text: '#4B5563', border: 'rgba(107,114,128,0.2)' };
+    case 'pending': return { bg: 'rgba(245, 166, 35, 0.12)', text: '#F5A623', border: 'rgba(245,166,35,0.25)' };
+    case 'accepted': return { bg: 'rgba(56, 189, 248, 0.12)', text: '#38BDF8', border: 'rgba(56,189,248,0.25)' };
+    case 'arriving': return { bg: 'rgba(167, 139, 250, 0.12)', text: '#A78BFA', border: 'rgba(167,139,250,0.25)' };
+    case 'transit': return { bg: 'rgba(56, 189, 248, 0.12)', text: '#38BDF8', border: 'rgba(56,189,248,0.25)' };
+    case 'delivered': case 'verified': return { bg: 'rgba(52, 211, 153, 0.12)', text: '#34D399', border: 'rgba(52,211,153,0.25)' };
+    case 'cancelled': case 'rejected': return { bg: 'rgba(248, 113, 113, 0.12)', text: '#F87171', border: 'rgba(248,113,113,0.25)' };
+    default: return { bg: 'rgba(156, 163, 175, 0.12)', text: '#9CA3AF', border: 'rgba(156,163,175,0.25)' };
   }
 };
 

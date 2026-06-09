@@ -1,3 +1,4 @@
+// Trigger re-compile for Reanimated plugin
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, useAnimatedProps, withTiming, Easing } from 'react-native-reanimated';

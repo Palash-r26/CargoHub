@@ -19,13 +19,13 @@ export const EarningsCard: React.FC<EarningsCardProps> = ({ label, amount, trips
 };
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: theme.colors.background.card, borderRadius: theme.radius.xl, padding: theme.spacing.lg, borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.8)', ...theme.shadows.card },
-  totalCard: { backgroundColor: theme.colors.brand.primary, borderColor: theme.colors.brand.primaryLight },
+  card: { backgroundColor: theme.colors.background.card, borderRadius: theme.radius.xl, padding: theme.spacing.lg, borderWidth: 1, borderColor: theme.colors.border.subtle, ...theme.shadows.card },
+  totalCard: { backgroundColor: theme.colors.brand.primary, borderColor: theme.colors.brand.primary },
   label: { fontFamily: theme.typography.bodySemibold.fontFamily, fontSize: 12, color: theme.colors.text.muted, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 },
   totalLabel: { color: 'rgba(255, 255, 255, 0.8)' },
   amount: { fontFamily: theme.typography.mono.fontFamily, fontSize: 32, fontWeight: 'bold', color: theme.colors.text.primary },
   totalAmount: { color: 'white' },
-  tripsContainer: { marginTop: 8, backgroundColor: theme.colors.background.secondary, alignSelf: 'flex-start', paddingHorizontal: 8, paddingVertical: 4, borderRadius: theme.radius.sm },
+  tripsContainer: { marginTop: 8, backgroundColor: theme.colors.background.tertiary, alignSelf: 'flex-start', paddingHorizontal: 8, paddingVertical: 4, borderRadius: theme.radius.sm },
   trips: { fontFamily: theme.typography.bodyMedium.fontFamily, fontSize: 12, color: theme.colors.brand.secondary },
-  totalTrips: { color: theme.colors.brand.primary },
+  totalTrips: { color: 'white' },
 });

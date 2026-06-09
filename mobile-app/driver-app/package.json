@@ -1,13 +1,13 @@
 {
   "name": "driver-app",
   "version": "1.0.0",
-  "main": "expo/AppEntry.js",
+  "main": "index.js",
   "scripts": {
-    "start": "expo start",
-    "dev:driver": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+    "start": "npx expo start",
+    "dev:driver": "npx expo start",
+    "android": "npx expo start --android",
+    "ios": "npx expo start --ios",
+    "web": "npx expo start --web"
   },
   "dependencies": {
     "@expo/metro-runtime": "~4.0.1",
