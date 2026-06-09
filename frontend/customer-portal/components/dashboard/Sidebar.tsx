@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
+import logo from "@/app/logo.jpeg";
 import { 
   LayoutDashboard, PackagePlus, MapPin, ClipboardList, 
   Wallet, Star, HeadphonesIcon, Settings, LogOut, ChevronLeft, ChevronRight
@@ -51,9 +53,13 @@ export default function Sidebar() {
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
-          <div className="w-8 h-8 flex-shrink-0 rounded-lg flex items-center justify-center text-sm shadow-sm" style={{ background: "linear-gradient(135deg, var(--brand-primary), var(--brand-secondary))" }}>
-            🚛
-          </div>
+          <Image
+            src={logo}
+            alt="CargoHub Logo"
+            width={32}
+            height={32}
+            className="rounded-lg object-cover flex-shrink-0 shadow-sm"
+          />
           {!isSidebarCollapsed && (
             <motion.span 
               initial={{ opacity: 0 }} 

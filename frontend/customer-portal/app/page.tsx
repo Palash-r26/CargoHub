@@ -8,6 +8,7 @@ import {
   CheckCircle2, IndianRupee, Navigation, Smartphone, Play, Image as ImageIcon
 } from "lucide-react";
 import Image from "next/image";
+import logo from "./logo.jpeg";
 import { HeroIllustration } from "../components/HeroIllustration";
 import img1 from "./elements/1.png";
 import img2 from "./elements/2.png";
@@ -119,99 +120,87 @@ export default function LandingPage() {
   const [activeVehicle, setActiveVehicle] = useState(0);
 
   return (
-    <div className="min-h-screen bg-mesh bg-grid" style={{ background: "var(--bg-primary)" }}>
+    <div className="min-h-screen bg-[#f4f7fb]">
       {/* ── Navigation ─────────────────────────────────────────────────── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass" style={{ borderRadius: 0, borderTop: "none", borderLeft: "none", borderRight: "none" }}>
-        <div className="container-wide flex items-center justify-between h-20">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg shadow-sm" style={{ background: "linear-gradient(135deg, var(--brand-primary), var(--brand-secondary))" }}>
-              🚛
-            </div>
-            <span className="font-display text-2xl font-bold tracking-tight" style={{ color: "var(--text-primary)" }}>
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#f4f7fb]/90 backdrop-blur-md border-b border-slate-200/60">
+        <div className="container mx-auto px-6 md:px-12 flex items-center justify-between h-[68px]">
+
+          {/* Logo */}
+          <div className="flex items-center gap-2.5">
+            <Image
+              src={logo}
+              alt="CargoHub Logo"
+              width={36}
+              height={36}
+              className="rounded-full object-cover flex-shrink-0"
+            />
+            <span className="font-sans text-[17px] font-bold tracking-tight text-[#0f172a]">
               CargoHub
             </span>
           </div>
-          <div className="hidden md:flex items-center gap-10">
-            <a href="#features" className="text-sm font-semibold tracking-wide hover:text-[var(--brand-primary)] transition-colors" style={{ color: "var(--text-secondary)" }}>Features</a>
-            <a href="#vehicles" className="text-sm font-semibold tracking-wide hover:text-[var(--brand-primary)] transition-colors" style={{ color: "var(--text-secondary)" }}>Vehicles</a>
-            <a href="#how-it-works" className="text-sm font-semibold tracking-wide hover:text-[var(--brand-primary)] transition-colors" style={{ color: "var(--text-secondary)" }}>How It Works</a>
+
+          {/* Center Nav Links */}
+          <div className="hidden md:flex items-center gap-8">
+            <a href="#features"      className="text-[14px] font-semibold text-slate-500 hover:text-[#0f172a] transition-colors">Features</a>
+            <a href="#vehicles"      className="text-[14px] font-semibold text-slate-500 hover:text-[#0f172a] transition-colors">Vehicles</a>
+            <a href="#how-it-works"  className="text-[14px] font-semibold text-slate-500 hover:text-[#0f172a] transition-colors">How It Works</a>
           </div>
-          <div className="hidden md:flex items-center gap-4">
-            <a href="/login" className="text-sm font-semibold hover:text-[var(--brand-primary)] transition-colors px-4 py-2.5" style={{ color: "var(--text-secondary)" }}>Log In</a>
-            <a href="/book" className="btn-primary text-sm font-semibold" style={{ padding: "10px 24px" }}>Book Now</a>
+
+          {/* Right Actions */}
+          <div className="hidden md:flex items-center gap-3">
+            <a
+              href="/login"
+              className="text-[14px] font-semibold text-slate-600 hover:text-[#0f172a] transition-colors px-4 py-2"
+            >
+              Log In
+            </a>
+            <a
+              href="/book"
+              className="text-[14px] font-bold text-white bg-[#0f172a] hover:bg-slate-800 transition-colors px-5 py-2.5 shadow-sm"
+              style={{ borderRadius: "4px" }}
+            >
+              Book Now
+            </a>
           </div>
         </div>
       </nav>
 
       {/* ── Hero Section ───────────────────────────────────────────────── */}
-      <section className="relative min-h-screen flex flex-col justify-center pt-32 pb-24 overflow-hidden" style={{ background: "var(--bg-primary)" }}>
-        {/* Curved highlight blob shape representing WareHub background curve */}
-        <div className="absolute top-0 right-0 w-[60vw] h-[80vh] rounded-bl-[20vw] bg-[#FFF3EC] pointer-events-none z-0" />
-
-        {/* Secondary soft blob overlays */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-[25%] left-[2%] w-[350px] h-[350px] rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob" style={{ background: "var(--brand-primary)" }} />
-        </div>
-
-        <div className="container-wide relative z-10 w-full">
-          <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-            {/* Left: Copy */}
+      <section className="relative min-h-[80vh] flex flex-col pt-24 pb-20 overflow-visible items-center text-center">
+        <div className="container mx-auto px-6 md:px-12 relative z-10 w-full flex flex-col items-center">
             <motion.div
-              className="lg:col-span-6"
+              className="max-w-4xl mx-auto flex flex-col items-center mt-4 mb-4 z-20"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
             >
-              <div className="badge badge-delivered mb-6 font-semibold" style={{ display: "inline-flex", background: "rgba(2, 89, 221, 0.08)", color: "var(--brand-primary)", border: "1px solid rgba(2, 89, 221, 0.12)" }}>
-                <Zap className="w-3.5 h-3.5" /> Live in 50+ cities
-              </div>
-
-              <h1 className="text-4xl md:text-7xl lg:text-[64px] font-display leading-[1.1] mb-6 font-extrabold" style={{ color: "var(--text-primary)", letterSpacing: "-0.02em" }}>
-                Move Cargo.<br />
-                <span className="text-[var(--brand-primary)]">Track Live.</span><br />
-                Pay Smart.
+              <h1 className="text-5xl md:text-7xl lg:text-[80px] font-sans leading-[1.05] mb-6 font-semibold text-[#0f172a] tracking-tight">
+                Full Sustainable <br /> Cargo Solution
               </h1>
 
-              <p className="text-base md:text-lg mb-8 max-w-[480px] text-[var(--text-secondary)] font-medium leading-relaxed">
-                India&apos;s most trusted platform for on-demand cargo transport.
-                Book a truck in 30 seconds, track your driver in real-time,
-                and pay securely with Razorpay.
+              <p className="text-base md:text-lg mb-10 max-w-2xl text-slate-500 font-medium leading-relaxed">
+                We Continue To Pursue That Same Vision In Today&apos;s Complex, <br className="hidden md:block" />
+                Uncertain World, Working Every Day To Earn Our Customers&apos;
               </p>
 
-              <div className="flex flex-wrap items-center gap-4 mb-10">
-                <a href="/book" className="btn-primary text-base font-semibold" style={{ padding: "14px 32px" }}>
-                  Book a Truck <ArrowRight className="w-5 h-5 ml-1" />
-                </a>
-                <a href="#how-it-works" className="btn-secondary text-base font-semibold flex items-center justify-center gap-2 border border-[#0259DD]/20 bg-white text-[#0259DD] hover:bg-[#0259DD]/5 hover:border-[#0259DD] transition-all" style={{ padding: "14px 32px" }}>
-                  <div className="w-6 h-6 rounded-full bg-[#0259DD]/10 flex items-center justify-center text-xs">
-                    <Play className="w-3 h-3 fill-[#0259DD] text-[#0259DD] ml-0.5" />
+              <div className="flex flex-wrap items-center justify-center gap-8">
+                <a href="#start" className="flex items-stretch bg-white text-[#0f172a] text-sm font-bold shadow-[0_10px_40px_rgba(0,0,0,0.08)] hover:shadow-[0_10px_40px_rgba(0,0,0,0.12)] transition-shadow">
+                  <span className="px-8 py-4 flex items-center">Get Started</span>
+                  <div className="bg-[#0f172a] text-white px-5 flex items-center justify-center">
+                    <Play className="w-4 h-4 fill-white" />
                   </div>
-                  See How It Works
                 </a>
-              </div>
-
-              {/* Trust badges */}
-              <div className="flex items-center gap-8 flex-wrap">
-                <div className="flex items-center gap-2">
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div key={i} className="w-8 h-8 rounded-full border-2 flex items-center justify-center text-[10px] font-bold text-white shadow-sm" style={{ background: `hsl(${i * 65}, 65%, 45%)`, borderColor: "var(--bg-primary)" }}>
-                        {["R", "P", "A", "S"][i - 1]}
-                      </div>
-                    ))}
+                <a href="#watch" className="flex items-center gap-3 text-[#0f172a] text-[15px] font-semibold hover:opacity-80 transition-opacity">
+                  <div className="w-8 h-8 rounded-full border-2 border-slate-300 flex items-center justify-center">
+                    <Play className="w-3 h-3 fill-[#0f172a] translate-x-[1px]" />
                   </div>
-                  <span className="text-sm font-semibold" style={{ color: "var(--text-secondary)" }}>2,500+ drivers</span>
-                </div>
-                <div className="flex items-center gap-1.5 border-l border-gray-200 pl-8">
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <span className="text-sm font-bold" style={{ color: "var(--text-primary)" }}>4.8</span>
-                  <span className="text-sm" style={{ color: "var(--text-muted)" }}>rating</span>
-                </div>
+                  Watch more
+                </a>
               </div>
             </motion.div>
 
             {/* Right: Animated Hero Illustration */}
-            <div className="lg:col-span-6 w-full">
+            <div className="w-full max-w-[900px] mx-auto -mt-12 md:-mt-24 lg:-mt-60 z-10 relative">
               <HeroIllustration
                 images={{
                   img1,
@@ -229,32 +218,6 @@ export default function LandingPage() {
                 }}
               />
             </div>
-          </div>
-
-          {/* Bottom feature strip matching the WareHub bottom features */}
-          <motion.div
-            className="mt-32 lg:mt-48 w-full bg-[#FFF0EA] border border-[#FF6648]/12 rounded-3xl p-6 md:p-8"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          >
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-              {features.slice(0, 4).map((f, i) => (
-                <div key={f.title} className="flex gap-4 items-start relative">
-                  <div className="w-10 h-10 rounded-xl bg-[#FF6648] text-white flex items-center justify-center flex-shrink-0 shadow-sm shadow-[#FF6648]/20">
-                    {f.icon}
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-display font-bold text-base text-[var(--text-primary)] leading-snug">{f.title}</h4>
-                    <p className="text-[12px] text-[var(--text-secondary)] mt-1.5 leading-relaxed">{f.desc}</p>
-                  </div>
-                  {i < 3 && (
-                    <div className="hidden lg:block absolute right-0 top-1 bottom-1 w-px bg-gray-300/40" />
-                  )}
-                </div>
-              ))}
-            </div>
-          </motion.div>
         </div>
       </section>
 
@@ -445,8 +408,14 @@ export default function LandingPage() {
         <div className="container-wide">
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-2xl">🚛</span>
+              <div className="flex items-center gap-2.5 mb-4">
+                <Image
+                  src={logo}
+                  alt="CargoHub Logo"
+                  width={32}
+                  height={32}
+                  className="rounded-full object-cover flex-shrink-0"
+                />
                 <span className="font-display text-xl font-bold">CargoHub</span>
               </div>
               <p className="text-sm" style={{ color: "var(--text-muted)" }}>
