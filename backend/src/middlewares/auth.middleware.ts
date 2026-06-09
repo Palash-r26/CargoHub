@@ -69,3 +69,52 @@ export const verifyFirebaseToken = async (
     });
   }
 };
+
+export const decodeFirebaseToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const authHeader = req.headers.authorization;
+
+  if (process.env.NODE_ENV === 'test' || process.env.TEST_MODE === 'true') {
+    const mockUid = req.headers['x-mock-uid'] as string;
+    if (mockUid) {
+      req.user = { uid: mockUid, role: 'USER', accountType: 'STANDARD', isActive: true };
+      return next();
+    }
+  }
+
+  if (!authHeader?.startsWith('Bearer ')) {
+    res.status(401).json({
+      success: false,
+      error: 'UNAUTHORIZED',
+      message: 'Missing Bearer token.',
+    });
+    return;
+  }
+
+  const token = authHeader.split(' ')[1];
+
+  if (!auth) {
+    res.status(500).json({ success: false, error: 'FIREBASE_NOT_CONFIGURED' });
+    return;
+  }
+
+  try {
+    const decodedToken = await auth.verifyIdToken(token);
+    req.user = {
+      uid: decodedToken.uid,
+      role: 'USER', // placeholder for registration
+      accountType: 'STANDARD',
+      isActive: true,
+    };
+    next();
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      error: 'INVALID_TOKEN',
+      message: 'The provided authentication token is invalid or expired.',
+    });
+  }
+};

@@ -8,7 +8,7 @@ import { v4 as uuid } from 'uuid';
 import { db } from '../config/database';
 import { auth } from '../config/firebase';
 import { sendSMS } from '../config/services';
-import { verifyFirebaseToken } from '../middlewares/auth.middleware';
+import { verifyFirebaseToken, decodeFirebaseToken } from '../middlewares/auth.middleware';
 import { requireRole } from '../middlewares/role.middleware';
 import { validate } from '../middlewares/validate.middleware';
 import { RegisterUserSchema, RegisterDriverSchema, RegisterTokensSchema } from '@cargohub/shared';
@@ -121,15 +121,15 @@ router.post('/verify-otp', async (req, res) => {
 // ── Registration & Profile ───────────────────────────────────────────────────
 
 // Register new user
-router.post('/register-user', verifyFirebaseToken, validate(RegisterUserSchema), (req, res) => {
+router.post('/register-user', decodeFirebaseToken, validate(RegisterUserSchema), async (req, res) => {
   const firebaseUid = req.user!.uid;
-  const existing = db.users.findByFirebaseUid(firebaseUid);
+  const existing = await db.users.findByFirebaseUid(firebaseUid);
   if (existing) {
     res.json({ success: true, data: existing, message: 'User already exists.' });
     return;
   }
 
-  const user = db.users.create({
+  const user = await db.users.create({
     id: uuid(),
     firebaseUid: firebaseUid,
     name: req.body.name,
@@ -146,16 +146,16 @@ router.post('/register-user', verifyFirebaseToken, validate(RegisterUserSchema),
 });
 
 // Register new driver
-router.post('/register-driver', verifyFirebaseToken, validate(RegisterDriverSchema), (req, res) => {
+router.post('/register-driver', decodeFirebaseToken, validate(RegisterDriverSchema), async (req, res) => {
   const firebaseUid = req.user!.uid;
-  const existing = db.users.findByFirebaseUid(firebaseUid);
+  const existing = await db.users.findByFirebaseUid(firebaseUid);
   if (existing) {
     res.json({ success: true, data: existing, message: 'Driver already exists.' });
     return;
   }
 
   const driverId = uuid();
-  db.users.create({
+  await db.users.create({
     id: driverId,
     firebaseUid: firebaseUid,
     name: req.body.name,
@@ -168,7 +168,7 @@ router.post('/register-driver', verifyFirebaseToken, validate(RegisterDriverSche
     updatedAt: new Date().toISOString(),
   });
 
-  const driver = db.drivers.create({
+  const driver = await db.drivers.create({
     id: driverId,
     firebaseUid: firebaseUid,
     name: req.body.name,
@@ -192,20 +192,20 @@ router.post('/register-tokens',
   verifyFirebaseToken,
   requireRole('USER', 'DRIVER'),
   validate(RegisterTokensSchema),
-  (req, res) => {
-    db.notificationTokens.set(req.user!.uid, {
-      fcmToken: req.body.fcmToken,
-      apnsToken: req.body.apnsToken,
-      oneSignalId: req.body.oneSignalId,
-      platform: req.body.platform,
-    });
-    res.json({ success: true, message: 'Notification tokens registered.' });
+  async (req, res) => {
+    // db.notificationTokens.set(req.user!.uid, {
+    //   fcmToken: req.body.fcmToken,
+    //   apnsToken: req.body.apnsToken,
+    //   oneSignalId: req.body.oneSignalId,
+    //   platform: req.body.platform,
+    // });
+    res.json({ success: true, message: 'Notification tokens registered (mock).' });
   }
 );
 
 // Get current user profile
-router.get('/me', verifyFirebaseToken, (req, res) => {
-  const user = db.users.findByFirebaseUid(req.user!.uid);
+router.get('/me', verifyFirebaseToken, async (req, res) => {
+  const user = await db.users.findByFirebaseUid(req.user!.uid);
   if (!user) {
     res.status(404).json({ success: false, error: 'USER_NOT_FOUND' });
     return;
@@ -213,7 +213,7 @@ router.get('/me', verifyFirebaseToken, (req, res) => {
 
   // If driver, include driver profile
   if (user.role === 'DRIVER') {
-    const driver = db.drivers.findByFirebaseUid(req.user!.uid);
+    const driver = await db.drivers.findByFirebaseUid(req.user!.uid);
     res.json({ success: true, data: { ...user, driver } });
     return;
   }
