@@ -43,6 +43,8 @@
   --border-hover: rgba(2, 89, 221, 0.25);
   --border-active: rgba(2, 89, 221, 0.5);
   --border-card: rgba(11, 28, 63, 0.06);
+  --border-outline: transparent;
+  --border-input: rgba(2, 89, 221, 0.15);
 
   /* Shadows */
   --shadow-xs: 0 2px 8px rgba(11, 28, 63, 0.04);
@@ -99,6 +101,8 @@
   --border-hover: rgba(255, 255, 255, 0.15);
   --border-active: rgba(255, 255, 255, 0.3);
   --border-card: rgba(255, 255, 255, 0.12);
+  --border-outline: rgba(255, 255, 255, 0.2);
+  --border-input: rgba(255, 255, 255, 0.2);
 
   /* Shadows */
   --shadow-xs: 0 2px 8px rgba(0, 0, 0, 0.6);
