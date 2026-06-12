@@ -165,7 +165,7 @@ export default function LandingPage() {
           </div>
 
           {/* Right Actions */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
             <ThemeToggle />
             {user ? (
               <div 
@@ -215,7 +215,7 @@ export default function LandingPage() {
             ) : (
               <Link
                 href="/login"
-                className="text-[14px] font-semibold transition-colors px-4 py-2"
+                className="text-[13px] md:text-[14px] font-semibold transition-colors px-2 md:px-4 py-2"
                 style={{ color: "var(--text-secondary)" }}
               >
                 Log In
@@ -223,7 +223,7 @@ export default function LandingPage() {
             )}
             <Link
               href={user ? "/dashboard" : "/book"}
-              className="text-[14px] font-bold text-white px-5 py-2.5 shadow-sm transition-opacity hover:opacity-90 whitespace-nowrap"
+              className="text-[13px] md:text-[14px] font-bold text-white px-4 md:px-5 py-2 md:py-2.5 shadow-sm transition-opacity hover:opacity-90 whitespace-nowrap"
               style={{ background: "var(--brand-primary)", borderRadius: "4px" }}
             >
               {user ? "Dashboard" : "Book Now"}
@@ -241,25 +241,25 @@ export default function LandingPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
             >
-              <h1 className="text-5xl md:text-7xl lg:text-[80px] font-sans leading-[1.05] mb-6 font-semibold tracking-tight" style={{ color: "var(--text-primary)" }}>
-                Full Sustainable <br /> Cargo Solution
+              <h1 className="text-[40px] sm:text-5xl md:text-7xl lg:text-[80px] font-sans leading-[1.1] md:leading-[1.05] mb-4 md:mb-6 font-semibold tracking-tight px-4 md:px-0 text-center mx-auto" style={{ color: "var(--text-primary)" }}>
+                Full Sustainable <br className="hidden sm:block" /> Cargo Solution
               </h1>
 
-              <p className="text-base md:text-lg mb-10 max-w-2xl font-medium leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+              <p className="text-sm sm:text-base md:text-lg mb-8 md:mb-10 max-w-2xl font-medium leading-relaxed px-4 md:px-0 text-center mx-auto" style={{ color: "var(--text-secondary)" }}>
                 We Continue To Pursue That Same Vision In Today&apos;s Complex, <br className="hidden md:block" />
                 Uncertain World, Working Every Day To Earn Our Customers&apos;
               </p>
 
-              <div className="flex flex-wrap items-center justify-center gap-8">
-                <Link href="/register" className="flex items-stretch text-sm font-bold shadow-[0_10px_40px_rgba(0,0,0,0.08)] hover:shadow-[0_10px_40px_rgba(0,0,0,0.12)] transition-shadow" style={{ background: "var(--bg-card)", color: "var(--text-primary)" }}>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 w-full sm:w-auto px-6">
+                <Link href="/register" className="group flex items-stretch text-sm font-bold rounded-xl overflow-hidden transition-all duration-300 border shadow-sm hover:shadow-xl hover:-translate-y-1 bg-[var(--bg-glass)] hover:bg-black/5 dark:hover:bg-white/10 mx-auto" style={{ backdropFilter: "blur(12px)", borderColor: "var(--border-subtle)", color: "var(--text-primary)" }}>
                   <span className="px-8 py-4 flex items-center">Get Started</span>
-                  <div className="text-white px-5 flex items-center justify-center" style={{ background: "var(--text-primary)" }}>
-                    <Play className="w-4 h-4 fill-white" />
+                  <div className="px-5 flex items-center justify-center border-l transition-colors duration-300 bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.02)] group-hover:bg-[rgba(0,0,0,0.06)] dark:group-hover:bg-[rgba(255,255,255,0.08)]" style={{ borderColor: "var(--border-subtle)" }}>
+                    <Play className="w-4 h-4" style={{ fill: "var(--text-primary)" }} />
                   </div>
                 </Link>
-                <a href="#features" className="flex items-center gap-3 text-[15px] font-semibold hover:opacity-80 transition-opacity" style={{ color: "var(--text-primary)" }}>
-                  <div className="w-8 h-8 rounded-full border-2 flex items-center justify-center" style={{ borderColor: "var(--border-hover)" }}>
-                    <Play className="w-3 h-3 translate-x-[1px]" style={{ fill: "var(--text-primary)" }} />
+                <a href="#features" className="group flex items-center justify-center gap-3 text-[15px] font-semibold transition-all duration-300 hover:opacity-100 mx-auto" style={{ color: "var(--text-primary)" }}>
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center border shadow-sm backdrop-blur-md transition-all duration-300 group-hover:scale-110 group-hover:shadow-md bg-[var(--bg-glass)] group-hover:bg-black/5 dark:group-hover:bg-white/10" style={{ borderColor: "var(--border-subtle)" }}>
+                    <Play className="w-3.5 h-3.5 translate-x-[1px]" style={{ fill: "var(--text-primary)" }} />
                   </div>
                   Watch more
                 </a>
@@ -291,7 +291,7 @@ export default function LandingPage() {
       {/* ── Stats Bar ──────────────────────────────────────────────────── */}
       <section className="py-16" style={{ background: "var(--bg-secondary)" }}>
         <div className="container-wide">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 px-4 md:px-0">
             {stats.map((stat) => (
               <motion.div
                 key={stat.label}
@@ -300,7 +300,7 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <p className="font-mono text-3xl md:text-4xl font-extrabold gradient-text">
+                <p className="font-mono text-[28px] sm:text-3xl md:text-4xl font-extrabold gradient-text leading-none mb-1">
                   <AnimatedCounter target={stat.value} suffix={stat.suffix} />
                 </p>
                 <p className="text-sm mt-2" style={{ color: "var(--text-muted)" }}>{stat.label}</p>
@@ -328,7 +328,7 @@ export default function LandingPage() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 md:px-0">
             {features.map((feature, i) => (
               <motion.div
                 key={feature.title}
@@ -364,7 +364,7 @@ export default function LandingPage() {
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4 md:px-0">
             {vehicles.map((v, i) => (
               <motion.div
                 key={v.type}
@@ -407,7 +407,7 @@ export default function LandingPage() {
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 px-4 md:px-0">
             {steps.map((s, i) => (
               <motion.div
                 key={s.step}
@@ -457,11 +457,11 @@ export default function LandingPage() {
               <p className="text-lg mb-8 max-w-xl mx-auto" style={{ color: "var(--text-secondary)" }}>
                 Join thousands of businesses and individuals who trust CargoHub for their cargo needs.
               </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link href="/book" className="btn-primary text-base" style={{ padding: "16px 40px" }}>
-                  Start Shipping <ArrowRight className="w-5 h-5" />
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 px-4 sm:px-0">
+                <Link href="/book" className="btn-primary text-base transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex justify-center items-center mx-auto" style={{ padding: "16px 40px" }}>
+                  Start Shipping <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
-                <Link href="/register" className="btn-secondary text-base" style={{ padding: "16px 40px" }}>
+                <Link href="/register" className="flex justify-center items-center gap-2 text-base font-bold rounded-xl transition-all duration-300 border shadow-sm hover:shadow-xl hover:-translate-y-1 bg-[var(--bg-glass)] hover:bg-black/5 dark:hover:bg-white/10 mx-auto" style={{ padding: "16px 40px", backdropFilter: "blur(12px)", borderColor: "var(--border-subtle)", color: "var(--text-primary)" }}>
                   <Truck className="w-5 h-5" /> Become a Driver
                 </Link>
               </div>
@@ -473,7 +473,7 @@ export default function LandingPage() {
       {/* ── Footer ─────────────────────────────────────────────────────── */}
       <footer className="py-16" style={{ borderTop: "1px solid var(--border-subtle)" }}>
         <div className="container-wide">
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 mb-12 px-4 md:px-0 text-center sm:text-left">
             <div>
               <div className="flex items-center gap-2.5 mb-4">
                 <Image
