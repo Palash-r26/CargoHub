@@ -38,7 +38,7 @@ function TrackingContent() {
         if (!token) return;
 
         // Fetch booking
-        const res = await fetch(`http://localhost:5000/api/bookings/${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/bookings/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const json = await res.json();
@@ -49,7 +49,7 @@ function TrackingContent() {
           setDropoff(b.dropoffLocation);
           
           // Connect to Socket.IO for real-time driver tracking
-          socket = io("http://localhost:5000");
+          socket = io((`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}`));
           socket.on("connect", () => {
             socket.emit("join:booking", { bookingId: id });
           });

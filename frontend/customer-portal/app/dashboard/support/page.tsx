@@ -44,7 +44,7 @@ export default function SupportPage() {
     setIsTyping(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/support/ai-chat", {
+      const res = await fetch((`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}`) + "/api/support/ai-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: [...messages, userMessage] })
