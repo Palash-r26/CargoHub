@@ -54,7 +54,7 @@ export default function BookingPage() {
     if (!pickup || !dropoff) return;
     setEstimating(true);
     try {
-      const res = await fetch("http://localhost:5000/api/fare/estimate", {
+      const res = await fetch((`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}`) + "/api/fare/estimate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -117,7 +117,7 @@ export default function BookingPage() {
         weight: weight ? Number(weight) : undefined,
       };
 
-      const res = await fetch("http://localhost:5000/api/bookings", {
+      const res = await fetch((`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}`) + "/api/bookings", {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",

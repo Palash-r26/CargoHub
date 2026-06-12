@@ -176,7 +176,7 @@ export default function DriverDashboard() {
     if (!user || !firebaseAuth.currentUser) return;
 
     // Connect Socket.io
-    const socket = io("ws://localhost:5000", {
+    const socket = io((`${(process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000").replace(/^http/, "ws")}`), {
       auth: { token: user.firebaseUid }
     });
     socketRef.current = socket;
@@ -219,7 +219,7 @@ export default function DriverDashboard() {
       if (!user || !firebaseAuth.currentUser) return;
       try {
         const token = await firebaseAuth.currentUser.getIdToken();
-        const res = await fetch(`http://localhost:5000/api/drivers/${user.firebaseUid}/earnings`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/drivers/${user.firebaseUid}/earnings`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const json = await res.json();
@@ -241,7 +241,7 @@ export default function DriverDashboard() {
       try {
         setStatusLoading(true);
         const token = await firebaseAuth.currentUser.getIdToken();
-        const res = await fetch("http://localhost:5000/api/drivers/availability", {
+        const res = await fetch((`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}`) + "/api/drivers/availability", {
           method: "PATCH",
           headers: { 
             "Content-Type": "application/json",

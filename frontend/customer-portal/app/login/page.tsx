@@ -64,7 +64,7 @@ export default function LoginPage() {
       const result = await signInWithPopup(firebaseAuth, googleProvider);
       // We optionally try to register the user in case this is their first time logging in
       const idToken = await result.user.getIdToken();
-      await fetch(`http://localhost:5000/api/auth/${mode === 'user' ? 'register-user' : 'register-driver'}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/auth/${mode === 'user' ? 'register-user' : 'register-driver'}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
