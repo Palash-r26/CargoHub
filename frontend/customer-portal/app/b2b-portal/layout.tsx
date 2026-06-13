@@ -58,7 +58,7 @@ export default function B2BLayout({ children }: { children: React.ReactNode }) {
       )}
 
       {/* Sidebar */}
-      <aside className={`bg-[var(--bg-secondary)] border-r border-[var(--border-outline)] flex flex-col fixed inset-y-0 left-0 z-50 transition-all duration-300 ${sidebarOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full md:translate-x-0'}`}>
+      <aside className={`bg-white dark:bg-[#000000] border-r border-[var(--border-outline)] flex flex-col fixed inset-y-0 left-0 z-50 transition-all duration-300 ${sidebarOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full md:translate-x-0'}`}>
         <div className={`h-16 flex items-center border-b border-[var(--border-outline)] ${sidebarOpen ? 'px-6 justify-between' : 'justify-center'}`}>
           <div className={`flex items-center ${sidebarOpen ? 'gap-3' : ''}`}>
             <div className="w-8 h-8 bg-[var(--bg-card)] rounded flex items-center justify-center p-1 shadow-sm shrink-0">
@@ -121,7 +121,7 @@ export default function B2BLayout({ children }: { children: React.ReactNode }) {
       <div className={`flex-1 flex flex-col h-screen overflow-hidden transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-20 ml-0'}`}>
         
         {/* Top Navbar */}
-        <header className="h-16 border-b border-[var(--border-outline)] bg-[var(--bg-primary)]/80 backdrop-blur sticky top-0 z-30 px-4 md:px-8 flex items-center justify-between shrink-0">
+        <header className="h-16 border-b border-[var(--border-outline)] bg-white dark:bg-[#000000] sticky top-0 z-30 px-4 md:px-8 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-4">
             <button 
               onClick={() => setSidebarOpen(!sidebarOpen)} 
@@ -147,7 +147,7 @@ export default function B2BLayout({ children }: { children: React.ReactNode }) {
               {notificationsOpen && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setNotificationsOpen(false)}></div>
-                  <div className="absolute right-0 mt-2 w-80 bg-[var(--bg-card)] border border-[var(--border-outline)] rounded-xl shadow-lg py-2 z-50 animate-in fade-in slide-in-from-top-2">
+                  <div className="absolute -right-12 sm:right-0 mt-2 w-[calc(100vw-2rem)] sm:w-80 max-w-sm bg-[var(--bg-card)] border border-[var(--border-outline)] rounded-xl shadow-lg py-2 z-50 animate-in fade-in slide-in-from-top-2">
                     <div className="px-4 py-2 border-b border-[var(--border-outline)] flex justify-between items-center mb-2">
                       <h3 className="font-bold text-[var(--text-primary)]">Notifications</h3>
                       <span className="text-xs bg-orange-500/10 text-orange-500 px-2 py-0.5 rounded-full font-semibold">1 New</span>
