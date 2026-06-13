@@ -5,7 +5,8 @@ import { GradientButton } from '../components/GradientButton';
 import { useAuth } from '../context/AuthContext';
 import { Truck, ArrowLeft } from 'lucide-react-native';
 import { auth } from '../config/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { api } from '../services/api';
 
 export const LoginScreen = ({ route, navigation }: any) => {
   const selectedRole = route.params?.role || 'USER';
@@ -35,6 +36,60 @@ export const LoginScreen = ({ route, navigation }: any) => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    Alert.alert(
+      'Choose a Google Account',
+      'Select an account to continue with CargoHub:',
+      [
+        {
+          text: 'Sarvesh (sarvesh.customer@cargohub.com)',
+          onPress: () => performGoogleAuth('sarvesh.customer@cargohub.com', 'Sarvesh', '+919999900003')
+        },
+        {
+          text: 'Test Customer (test.customer@cargohub.com)',
+          onPress: () => performGoogleAuth('test.customer@cargohub.com', 'Test Customer', '+919999900004')
+        },
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        }
+      ]
+    );
+  };
+
+  const performGoogleAuth = async (googleEmail: string, googleName: string, googlePhone: string) => {
+    setLoading(true);
+    try {
+      const googlePassword = 'GoogleLoginPass123!';
+      let userCredential;
+      let token;
+      
+      try {
+        userCredential = await signInWithEmailAndPassword(auth, googleEmail, googlePassword);
+        token = await userCredential.user.getIdToken();
+      } catch (signInErr: any) {
+        if (signInErr.code === 'auth/user-not-found' || signInErr.code === 'auth/invalid-credential' || signInErr.code === 'auth/invalid-email') {
+          userCredential = await createUserWithEmailAndPassword(auth, googleEmail, googlePassword);
+          token = await userCredential.user.getIdToken();
+          
+          // Register on backend
+          await api.post('/auth/register-user', { name: googleName, phone: googlePhone }, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+        } else {
+          throw signInErr;
+        }
+      }
+
+      await login(token);
+    } catch (error: any) {
+      Alert.alert('Google Sign-In Error', error.message || 'Google Sign-In failed.');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       {/* Back button */}
@@ -47,7 +102,7 @@ export const LoginScreen = ({ route, navigation }: any) => {
 
       <View style={styles.header}>
         <View style={styles.logoContainer}>
-          <Image source={require('../assets/logo.png')} style={{ width: 44, height: 44 }} resizeMode="contain" />
+          <Image source={require('../assets/logo.png')} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
         </View>
         <Text style={styles.title}>CargoHub</Text>
         <Text style={styles.subtitle}>Customer App</Text>
@@ -89,6 +144,13 @@ export const LoginScreen = ({ route, navigation }: any) => {
           variant="coral"
           style={styles.button} 
         />
+
+        <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
+          <View style={styles.googleIconContainer}>
+            <Text style={styles.googleG}>G</Text>
+          </View>
+          <Text style={styles.googleButtonText}>Continue with Google</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Coral spinner overlay during verification/loading */}
@@ -106,7 +168,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: theme.colors.background.primary },
   backButton: { position: 'absolute', top: 50, left: 20, zIndex: 10, padding: 8 },
   header: { flex: 1.2, justifyContent: 'center', alignItems: 'center', paddingTop: 40 },
-  logoContainer: { width: 80, height: 80, borderRadius: theme.radius.xl, backgroundColor: theme.colors.brand.primary, justifyContent: 'center', alignItems: 'center', marginBottom: 16, ...theme.shadows.glow },
+  logoContainer: { width: 80, height: 80, borderRadius: 40, backgroundColor: theme.colors.brand.primary, justifyContent: 'center', alignItems: 'center', marginBottom: 16, overflow: 'hidden', ...theme.shadows.glow },
   title: { fontFamily: theme.typography.display.fontFamily, fontSize: 32, color: theme.colors.text.primary, fontWeight: 'bold' },
   subtitle: { fontFamily: theme.typography.bodyMedium.fontFamily, fontSize: 16, color: theme.colors.text.muted, marginTop: 4 },
   formContainer: { padding: theme.spacing.xl, paddingBottom: 50, backgroundColor: theme.colors.background.card, borderTopLeftRadius: theme.radius.xxl, borderTopRightRadius: theme.radius.xxl, ...theme.shadows.card },
@@ -115,6 +177,41 @@ const styles = StyleSheet.create({
   inputContainer: { flexDirection: 'row', alignItems: 'center', borderWidth: 1.5, borderColor: theme.colors.border.subtle, borderRadius: theme.radius.md, backgroundColor: theme.colors.background.primary, overflow: 'hidden', marginBottom: 16 },
   input: { flex: 1, paddingHorizontal: 16, paddingVertical: 16, fontFamily: theme.typography.body.fontFamily, fontSize: 16, color: theme.colors.text.primary },
   button: { marginTop: 8 },
+  googleButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
+    borderRadius: 9999,
+    paddingVertical: 14,
+    marginTop: 12,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  googleIconContainer: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#F1F5F9',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  googleG: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#4285F4',
+  },
+  googleButtonText: {
+    color: '#1E293B',
+    fontSize: 15,
+    fontWeight: '600',
+  },
   loadingOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(13, 15, 26, 0.85)', justifyContent: 'center', alignItems: 'center', zIndex: 100 },
   loadingText: { marginTop: 12, color: theme.colors.text.primary, fontSize: 16, fontWeight: '600' },
 });

@@ -7,7 +7,7 @@ import { z } from 'zod';
 
 // ── Enums ───────────────────────────────────────────────────────────────────
 
-export const VehicleTypeSchema = z.enum(['TATA_ACE', 'TEMPO_407', 'PICKUP_TRUCK', 'LARGE_TRUCK']);
+export const VehicleTypeSchema = z.enum(['MINI_PICKUP', 'TATA_ACE', 'MINI_TRUCK', 'LARGE_TRUCK', 'TEMPO_407', 'PICKUP_TRUCK']);
 export const LoadTypeSchema = z.enum(['FURNITURE', 'APPLIANCES', 'FRAGILE_GOODS', 'BOXES_CARTONS', 'BULK_GOODS', 'ELECTRONICS']);
 export const BookingStatusSchema = z.enum(['PENDING', 'ACCEPTED', 'DRIVER_ARRIVING', 'PICKED_UP', 'IN_TRANSIT', 'DELIVERED', 'CANCELLED']);
 export const RoleSchema = z.enum(['USER', 'DRIVER', 'ADMIN']);

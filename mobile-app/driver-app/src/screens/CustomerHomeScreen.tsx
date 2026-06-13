@@ -31,6 +31,7 @@ import { useDriver } from '../context/DriverContext';
 import { useSocket } from '../context/SocketContext';
 import { useTheme } from '../context/ThemeContext';
 import { api } from '../services/api';
+import { getMapTileUrl } from '../services/mapConfig';
 import { GradientButton } from '../components/GradientButton';
 import { StatusBar } from 'expo-status-bar';
 
@@ -98,6 +99,17 @@ export const CustomerHomeScreen = ({ navigation }: any) => {
   // Animations
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const slideAnim = useRef(new Animated.Value(0)).current;
+
+  const [mapTileUrl, setMapTileUrl] = useState('');
+  const stepRef = useRef(step);
+
+  useEffect(() => {
+    stepRef.current = step;
+  }, [step]);
+
+  useEffect(() => {
+    getMapTileUrl(themeMode).then(setMapTileUrl);
+  }, [themeMode]);
 
   useEffect(() => {
     (async () => {
@@ -208,7 +220,7 @@ export const CustomerHomeScreen = ({ navigation }: any) => {
 
         // Wait for driver to accept (timeout after 35s)
         setTimeout(() => {
-          if (step === 'SEARCHING') {
+          if (stepRef.current === 'SEARCHING') {
             Alert.alert('No Driver Found', 'No drivers available right now. Please try again.', [
               { text: 'OK', onPress: () => setStep('ESTIMATE') }
             ]);
@@ -245,15 +257,17 @@ export const CustomerHomeScreen = ({ navigation }: any) => {
             latitudeDelta: 0.05,
             longitudeDelta: 0.05,
           }}
-          mapType="none"
+          mapType={mapTileUrl ? 'none' : 'standard'}
           showsUserLocation
         >
-          <UrlTile
-            urlTemplate={`https://api.olamaps.io/tiles/v1/styles/default-${themeMode}-standard/{z}/{x}/{y}.png?api_key=${(process.env.EXPO_PUBLIC_OLA_MAPS_API_KEY || '').replace(/"/g, '')}`}
-            maximumZ={19}
-            flipY={false}
-            shouldReplaceMapContent={true}
-          />
+          {mapTileUrl ? (
+            <UrlTile
+              urlTemplate={mapTileUrl}
+              maximumZ={19}
+              flipY={false}
+              shouldReplaceMapContent={true}
+            />
+          ) : null}
         </MapView>
       ) : (
         <View style={styles.mapPlaceholder}>

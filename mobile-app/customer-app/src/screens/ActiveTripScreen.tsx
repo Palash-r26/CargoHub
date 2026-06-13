@@ -1,17 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import MapView, { Marker, Polyline, UrlTile, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapViewOriginal, { Marker as MarkerOriginal, Polyline as PolylineOriginal, UrlTile as UrlTileOriginal, PROVIDER_GOOGLE } from 'react-native-maps';
+const MapView = MapViewOriginal as any;
+const Marker = MarkerOriginal as any;
+const Polyline = PolylineOriginal as any;
+const UrlTile = UrlTileOriginal as any;
+
 import { theme } from '../theme/theme';
 import { api } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
+import { getMapTileUrl } from '../services/mapConfig';
 import { getSocket } from '../services/socket';
-import { Phone, MessageSquare, ShieldAlert } from 'lucide-react-native';
+import { Phone as PhoneOriginal, MessageSquare, ShieldAlert as ShieldAlertOriginal } from 'lucide-react-native';
+const Phone = PhoneOriginal as any;
+const ShieldAlert = ShieldAlertOriginal as any;
 
 export const ActiveTripScreen = ({ route, navigation }: any) => {
   const { bookingId } = route.params;
   const { themeMode } = useTheme();
   const [booking, setBooking] = useState<any>(null);
   const [driverLocation, setDriverLocation] = useState<{lat: number, lng: number} | null>(null);
+  const [mapTileUrl, setMapTileUrl] = useState('');
+
+  useEffect(() => {
+    getMapTileUrl(themeMode).then(setMapTileUrl);
+  }, [themeMode]);
 
   useEffect(() => {
     const fetchBooking = async () => {
@@ -71,7 +84,7 @@ export const ActiveTripScreen = ({ route, navigation }: any) => {
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
-        mapType="none"
+        mapType={mapTileUrl ? 'none' : 'standard'}
         initialRegion={{
           latitude: pickupLat,
           longitude: pickupLng,
@@ -79,12 +92,14 @@ export const ActiveTripScreen = ({ route, navigation }: any) => {
           longitudeDelta: 0.05,
         }}
       >
-        <UrlTile
-          urlTemplate={`https://api.olamaps.io/tiles/v1/styles/default-${themeMode}-standard/{z}/{x}/{y}.png?api_key=${(process.env.EXPO_PUBLIC_OLA_MAPS_API_KEY || '').replace(/"/g, '')}`}
-          maximumZ={19}
-          flipY={false}
-          shouldReplaceMapContent={true}
-        />
+        {mapTileUrl ? (
+          <UrlTile
+            urlTemplate={mapTileUrl}
+            maximumZ={19}
+            flipY={false}
+            shouldReplaceMapContent={true}
+          />
+        ) : null}
         <Marker 
           coordinate={{ latitude: pickupLat, longitude: pickupLng }} 
           title="Pickup"

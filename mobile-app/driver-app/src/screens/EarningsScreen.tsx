@@ -99,12 +99,20 @@ export const EarningsScreen = () => {
         {/* 3 Summary Stats Cards */}
         <View style={styles.statsRow}>
           <View style={styles.statCard}>
-            <Text style={styles.statLabel}>Today</Text>
-            <Text style={styles.statValue}>₹{earnings.today}</Text>
+            <Text style={styles.statLabel}>
+              {activeTab === 'Daily' ? 'Today' : activeTab === 'Weekly' ? 'This Week' : 'This Month'}
+            </Text>
+            <Text style={styles.statValue}>
+              ₹{activeTab === 'Daily' ? earnings.today : activeTab === 'Weekly' ? earnings.thisWeek : earnings.thisMonth}
+            </Text>
           </View>
           <View style={styles.statCard}>
-            <Text style={styles.statLabel}>This Week</Text>
-            <Text style={styles.statValue}>₹{earnings.thisWeek}</Text>
+            <Text style={styles.statLabel}>
+              {activeTab === 'Daily' ? 'This Week' : activeTab === 'Weekly' ? 'This Month' : 'This Week'}
+            </Text>
+            <Text style={styles.statValue}>
+              ₹{activeTab === 'Daily' ? earnings.thisWeek : activeTab === 'Weekly' ? earnings.thisMonth : earnings.thisWeek}
+            </Text>
           </View>
           <View style={[styles.statCard, styles.accentCard]}>
             <Text style={[styles.statLabel, { color: 'rgba(255,255,255,0.7)' }]}>Total Trips</Text>

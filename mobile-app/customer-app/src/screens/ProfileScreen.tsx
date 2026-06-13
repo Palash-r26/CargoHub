@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert, Image, Linking } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert, Image, Linking, TextInput, Modal, ActivityIndicator } from 'react-native';
 import { theme } from '../theme/theme';
 import { Header } from '../components/Header';
 import { useAuth } from '../context/AuthContext';
@@ -7,7 +7,7 @@ import { useTheme } from '../context/ThemeContext';
 import { 
   LogOut as LogOutIcon, ChevronRight as ChevronRightIcon,
   Bell as BellIcon, HelpCircle as HelpCircleIcon, FileText as FileTextIcon, Camera as CameraIcon,
-  Star as StarIcon, Clock as ClockIcon, Moon as MoonIcon
+  Star as StarIcon, Clock as ClockIcon, Moon as MoonIcon, Edit2 as Edit2Icon, X as XIcon
 } from 'lucide-react-native';
 
 const LogOut = LogOutIcon as any;
@@ -19,13 +19,22 @@ const Camera = CameraIcon as any;
 const Star = StarIcon as any;
 const Clock = ClockIcon as any;
 const Moon = MoonIcon as any;
+const Edit2 = Edit2Icon as any;
+const X = XIcon as any;
+
 import * as ImagePicker from 'expo-image-picker';
+import { api } from '../services/api';
 
 export const ProfileScreen = ({ navigation }: any) => {
   const { logout, user, updateProfile } = useAuth();
   const { themeMode, toggleTheme } = useTheme();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [avatarUri, setAvatarUri] = useState<string | null>(null);
+
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [editName, setEditName] = useState(user?.name || '');
+  const [editPhone, setEditPhone] = useState(user?.phone || '');
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const handleUpdateAvatar = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -41,8 +50,27 @@ export const ProfileScreen = ({ navigation }: any) => {
     });
     if (!result.canceled && result.assets && result.assets[0]) {
       setAvatarUri(result.assets[0].uri);
-      // Ideally, upload to backend here.
       Alert.alert('Success', 'Profile photo updated successfully!');
+    }
+  };
+
+  const handleUpdateProfile = async () => {
+    if (!editName.trim() || !editPhone.trim()) {
+      Alert.alert('Error', 'Name and phone cannot be empty.');
+      return;
+    }
+    setIsUpdating(true);
+    try {
+      const response = await api.put('/auth/me', { name: editName, phone: editPhone });
+      if (response.data?.success) {
+        updateProfile({ name: editName, phone: editPhone });
+        setIsEditModalVisible(false);
+        Alert.alert('Success', 'Profile updated successfully!');
+      }
+    } catch (err: any) {
+      Alert.alert('Error', err.response?.data?.error || 'Failed to update profile.');
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -81,7 +109,12 @@ export const ProfileScreen = ({ navigation }: any) => {
               <Camera size={14} color="white" />
             </View>
           </TouchableOpacity>
-          <Text style={styles.customerName}>{user?.name || 'Customer'}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 12 }}>
+            <Text style={styles.customerName}>{user?.name || 'Customer'}</Text>
+            <TouchableOpacity onPress={() => { setEditName(user?.name || ''); setEditPhone(user?.phone || ''); setIsEditModalVisible(true); }} style={{ marginLeft: 8, padding: 4 }}>
+              <Edit2 size={16} color={theme.colors.brand.primary} />
+            </TouchableOpacity>
+          </View>
           <Text style={styles.customerPhone}>{user?.phone || '+91 99999 99999'}</Text>
         </View>
 
@@ -163,6 +196,51 @@ export const ProfileScreen = ({ navigation }: any) => {
           <Text style={styles.logoutText}>Log Out</Text>
         </TouchableOpacity>
       </ScrollView>
+
+      {/* Edit Profile Modal */}
+      <Modal visible={isEditModalVisible} transparent animationType="slide">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Edit Profile</Text>
+              <TouchableOpacity onPress={() => setIsEditModalVisible(false)}>
+                <X size={24} color={theme.colors.text.primary} />
+              </TouchableOpacity>
+            </View>
+            
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Full Name</Text>
+              <TextInput
+                style={styles.input}
+                value={editName}
+                onChangeText={setEditName}
+                placeholder="Enter your name"
+                placeholderTextColor={theme.colors.text.muted}
+              />
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Phone Number</Text>
+              <TextInput
+                style={styles.input}
+                value={editPhone}
+                onChangeText={setEditPhone}
+                keyboardType="phone-pad"
+                placeholder="Enter your phone number"
+                placeholderTextColor={theme.colors.text.muted}
+              />
+            </View>
+
+            <TouchableOpacity 
+              style={styles.saveBtn} 
+              onPress={handleUpdateProfile}
+              disabled={isUpdating}
+            >
+              {isUpdating ? <ActivityIndicator color="white" /> : <Text style={styles.saveBtnText}>Save Changes</Text>}
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -200,4 +278,15 @@ const styles = StyleSheet.create({
   // Log Out button
   logoutBtn: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8, padding: 14, borderWidth: 1.5, borderColor: theme.colors.brand.danger, borderRadius: theme.radius.full, marginBottom: 20 },
   logoutText: { fontFamily: theme.typography.bodySemibold.fontFamily, fontSize: 15, color: theme.colors.brand.danger, fontWeight: 'bold' },
+
+  // Modal Styles
+  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
+  modalContent: { backgroundColor: theme.colors.background.primary, borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: theme.spacing.xl, paddingBottom: 40 },
+  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
+  modalTitle: { fontSize: 20, fontWeight: 'bold', color: theme.colors.text.primary },
+  inputGroup: { marginBottom: 20 },
+  inputLabel: { fontSize: 14, color: theme.colors.text.secondary, marginBottom: 8, fontWeight: '500' },
+  input: { backgroundColor: theme.colors.background.card, borderWidth: 1, borderColor: theme.colors.border.subtle, borderRadius: theme.radius.lg, padding: 16, fontSize: 16, color: theme.colors.text.primary },
+  saveBtn: { backgroundColor: theme.colors.brand.primary, padding: 16, borderRadius: theme.radius.full, alignItems: 'center', marginTop: 10 },
+  saveBtnText: { color: 'white', fontSize: 16, fontWeight: 'bold' },
 });

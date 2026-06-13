@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, Alert, TouchableOpacity, Dimensions
 import MapViewOriginal, { Marker as MarkerOriginal, PROVIDER_GOOGLE, UrlTile as UrlTileOriginal } from 'react-native-maps';
 import { theme } from '../theme/theme';
 import { api } from '../services/api';
+import { getMapTileUrl } from '../services/mapConfig';
 import { useTheme } from '../context/ThemeContext';
 import { AvailableJobCard } from '../components/AvailableJobCard';
 import { IncomingJobModal } from './IncomingJobModal';
@@ -36,6 +37,11 @@ export const AvailableJobsScreen = ({ navigation }: any) => {
   const { themeMode } = useTheme();
   const [availableJobs, setAvailableJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mapTileUrl, setMapTileUrl] = useState('');
+
+  useEffect(() => {
+    getMapTileUrl(themeMode).then(setMapTileUrl);
+  }, [themeMode]);
   const [incomingJob, setIncomingJob] = useState<any>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const { socket } = useSocket();
@@ -118,7 +124,8 @@ export const AvailableJobsScreen = ({ navigation }: any) => {
             <MapView
               provider={PROVIDER_GOOGLE}
               style={styles.map}
-              mapType="none"
+              mapType={mapTileUrl ? 'none' : 'standard'}
+              customMapStyle={mapTileUrl ? undefined : darkMapStyle}
               initialRegion={{
                 latitude: availableJobs[0]?.pickupLat || 20.5937,
                 longitude: availableJobs[0]?.pickupLng || 78.9629,
@@ -126,11 +133,13 @@ export const AvailableJobsScreen = ({ navigation }: any) => {
                 longitudeDelta: 0.1,
               }}
             >
-              <UrlTile 
-                urlTemplate={`https://api.olamaps.io/tiles/v1/styles/default-${themeMode}-standard/{z}/{x}/{y}.png?api_key=${(process.env.EXPO_PUBLIC_OLA_MAPS_API_KEY || '').replace(/"/g, '')}`}
-                maximumZ={19}
-                shouldReplaceMapContent={true}
-              />
+              {mapTileUrl ? (
+                <UrlTile 
+                  urlTemplate={mapTileUrl}
+                  maximumZ={19}
+                  shouldReplaceMapContent={true}
+                />
+              ) : null}
               {availableJobs.map(job => (
                 job.pickupLat && job.pickupLng ? (
                   <Marker 

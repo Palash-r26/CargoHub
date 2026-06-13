@@ -134,7 +134,7 @@ export const ProfileScreen = ({ navigation }: any) => {
           </TouchableOpacity>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 12 }}>
             <Text style={styles.driverName}>{driver?.name || 'Driver Partner'}</Text>
-            <TouchableOpacity onPress={() => setIsEditModalVisible(true)} style={{ marginLeft: 8, padding: 4 }}>
+            <TouchableOpacity onPress={() => { setEditName(driver?.name || ''); setEditPhone(driver?.phone || ''); setIsEditModalVisible(true); }} style={{ marginLeft: 8, padding: 4 }}>
               <Edit2 size={16} color={theme.colors.brand.primary} />
             </TouchableOpacity>
           </View>

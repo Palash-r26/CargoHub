@@ -10,7 +10,7 @@ export const BASE_URL = process.env.EXPO_PUBLIC_API_URL || (__DEV__
 
 export const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 5000, // 5 seconds timeout
+  timeout: 30000, // 30 seconds timeout
   headers: {
     'Content-Type': 'application/json',
     'X-Platform': Platform.OS,

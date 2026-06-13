@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, TextInput, Alert, ScrollView } from 'react-native';
-import MapView, { Marker, Polyline, UrlTile, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapViewOriginal, { Marker as MarkerOriginal, Polyline as PolylineOriginal, UrlTile as UrlTileOriginal, PROVIDER_GOOGLE } from 'react-native-maps';
+const MapView = MapViewOriginal as any;
+const Marker = MarkerOriginal as any;
+const Polyline = PolylineOriginal as any;
+const UrlTile = UrlTileOriginal as any;
+
 import * as Location from 'expo-location';
 import { theme } from '../theme/theme';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { api } from '../services/api';
-import { Search, MapPin, Navigation as NavIcon, Clock } from 'lucide-react-native';
+import { getMapTileUrl } from '../services/mapConfig';
+import { Search as SearchOriginal, MapPin as MapPinOriginal, Navigation as NavIconOriginal, Clock } from 'lucide-react-native';
+const Search = SearchOriginal as any;
+const MapPin = MapPinOriginal as any;
+const NavIcon = NavIconOriginal as any;
 
 const { width, height } = Dimensions.get('window');
 
@@ -14,6 +23,11 @@ export const HomeScreen = ({ navigation }: any) => {
   const { user } = useAuth();
   const { themeMode } = useTheme();
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
+  const [mapTileUrl, setMapTileUrl] = useState('');
+
+  useEffect(() => {
+    getMapTileUrl(themeMode).then(setMapTileUrl);
+  }, [themeMode]);
   const [pickup, setPickup] = useState('Current Location');
   const [dropoff, setDropoff] = useState('');
   const [fareEstimate, setFareEstimate] = useState<any>(null);
@@ -69,7 +83,7 @@ export const HomeScreen = ({ navigation }: any) => {
         <MapView
           provider={PROVIDER_GOOGLE}
           style={styles.map}
-          mapType="none"
+          mapType={mapTileUrl ? 'none' : 'standard'}
           initialRegion={{
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
@@ -78,12 +92,14 @@ export const HomeScreen = ({ navigation }: any) => {
           }}
           showsUserLocation
         >
-          <UrlTile
-            urlTemplate={`https://api.olamaps.io/tiles/v1/styles/default-${themeMode}-standard/{z}/{x}/{y}.png?api_key=${(process.env.EXPO_PUBLIC_OLA_MAPS_API_KEY || '').replace(/"/g, '')}`}
-            maximumZ={19}
-            flipY={false}
-            shouldReplaceMapContent={true}
-          />
+          {mapTileUrl ? (
+            <UrlTile
+              urlTemplate={mapTileUrl}
+              maximumZ={19}
+              flipY={false}
+              shouldReplaceMapContent={true}
+            />
+          ) : null}
         </MapView>
       ) : (
         <View style={styles.mapPlaceholder}>

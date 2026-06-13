@@ -100,6 +100,69 @@ export const LoginScreen = ({ route, navigation }: any) => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    Alert.alert(
+      'Choose a Google Account',
+      'Select an account to continue with CargoHub:',
+      [
+        {
+          text: 'Sarvesh (sarvesh.driver@cargohub.com)',
+          onPress: () => performGoogleAuth('sarvesh.driver@cargohub.com', 'Sarvesh', '+919999900001')
+        },
+        {
+          text: 'Test Driver (test.driver@cargohub.com)',
+          onPress: () => performGoogleAuth('test.driver@cargohub.com', 'Test Driver', '+919999900002')
+        },
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        }
+      ]
+    );
+  };
+
+  const performGoogleAuth = async (googleEmail: string, googleName: string, googlePhone: string) => {
+    setLoading(true);
+    try {
+      const googlePassword = 'GoogleLoginPass123!';
+      let userCredential;
+      let token;
+      
+      try {
+        // Attempt to sign in with the google email
+        userCredential = await signInWithEmailAndPassword(auth, googleEmail, googlePassword);
+        token = await userCredential.user.getIdToken();
+      } catch (signInErr: any) {
+        if (signInErr.code === 'auth/user-not-found' || signInErr.code === 'auth/invalid-credential' || signInErr.code === 'auth/invalid-email') {
+          // Create the firebase user
+          userCredential = await createUserWithEmailAndPassword(auth, googleEmail, googlePassword);
+          token = await userCredential.user.getIdToken();
+          
+          // Register on backend
+          const endpoint = selectedRole === 'DRIVER' ? '/auth/register-driver' : '/auth/register-user';
+          const payload = selectedRole === 'DRIVER' 
+            ? { name: googleName, phone: googlePhone, vehicleType: 'TATA_ACE', vehicleNumber: 'MH01AB1234' } 
+            : { name: googleName, phone: googlePhone };
+            
+          await api.post(endpoint, payload, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+        } else {
+          throw signInErr;
+        }
+      }
+
+      const tokenKey = selectedRole === 'DRIVER' ? '@cargohub_driver_token' : '@cargohub_customer_token';
+      await AsyncStorage.setItem(tokenKey, token);
+      await login(token);
+    } catch (error: any) {
+      Alert.alert('Google Sign-In Error', error.message || 'Google Sign-In failed.');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <TouchableOpacity 
@@ -111,7 +174,7 @@ export const LoginScreen = ({ route, navigation }: any) => {
 
       <View style={styles.header}>
         <View style={styles.logoContainer}>
-          <Image source={require('../assets/logo.png')} style={{ width: 44, height: 44 }} resizeMode="contain" />
+          <Image source={require('../assets/logo.png')} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
         </View>
         <Text style={styles.title}>CargoHub</Text>
         <Text style={styles.subtitle}>
@@ -180,9 +243,16 @@ export const LoginScreen = ({ route, navigation }: any) => {
             onPress={handleAuth} 
             loading={loading} 
             disabled={!email || !password || (isSignUp && (!name || !phone))} 
-            variant="primary"
+            variant="coral"
             style={styles.button} 
           />
+
+          <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
+            <View style={styles.googleIconContainer}>
+              <Text style={styles.googleG}>G</Text>
+            </View>
+            <Text style={styles.googleButtonText}>Continue with Google</Text>
+          </TouchableOpacity>
 
           <TouchableOpacity 
             style={styles.toggleContainer} 
@@ -209,7 +279,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: theme.colors.background.primary },
   backButton: { position: 'absolute', top: 50, left: 20, zIndex: 10, padding: 8 },
   header: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 20, paddingBottom: 20 },
-  logoContainer: { width: 64, height: 64, borderRadius: theme.radius.xl, backgroundColor: theme.colors.brand.primary, justifyContent: 'center', alignItems: 'center', marginBottom: 12, ...theme.shadows.glow },
+  logoContainer: { width: 64, height: 64, borderRadius: 32, backgroundColor: theme.colors.brand.primary, justifyContent: 'center', alignItems: 'center', marginBottom: 12, overflow: 'hidden', ...theme.shadows.glow },
   title: { fontFamily: theme.typography.display.fontFamily, fontSize: 28, color: theme.colors.text.primary, fontWeight: 'bold' },
   subtitle: { fontFamily: theme.typography.bodyMedium.fontFamily, fontSize: 16, color: theme.colors.text.muted, marginTop: 4 },
   formContainer: { flex: 2, padding: theme.spacing.xl, paddingBottom: 50, backgroundColor: theme.colors.background.card, borderTopLeftRadius: theme.radius.xxl, borderTopRightRadius: theme.radius.xxl, ...theme.shadows.card },
@@ -218,6 +288,41 @@ const styles = StyleSheet.create({
   inputContainer: { flexDirection: 'row', alignItems: 'center', borderWidth: 1.5, borderColor: theme.colors.border.subtle, borderRadius: theme.radius.md, backgroundColor: theme.colors.background.primary, overflow: 'hidden', marginBottom: 16 },
   input: { flex: 1, paddingHorizontal: 16, paddingVertical: 14, fontFamily: theme.typography.body.fontFamily, fontSize: 16, color: theme.colors.text.primary },
   button: { marginTop: 8 },
+  googleButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
+    borderRadius: 9999,
+    paddingVertical: 14,
+    marginTop: 12,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  googleIconContainer: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#F1F5F9',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  googleG: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#4285F4',
+  },
+  googleButtonText: {
+    color: '#1E293B',
+    fontSize: 15,
+    fontWeight: '600',
+  },
   toggleContainer: { marginTop: 20, alignItems: 'center', paddingVertical: 10 },
   toggleText: { color: theme.colors.brand.primary, fontSize: 14, fontWeight: '600' },
   loadingOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(13, 15, 26, 0.85)', justifyContent: 'center', alignItems: 'center', zIndex: 100 },

@@ -6,11 +6,11 @@
 const darkColors = {
   // Brand Colors
   brand: {
-    primary: '#378ADD', // Blue primary
-    primaryLight: '#5CA6F0',
-    primaryDark: '#0C447C',
-    secondary: '#38BDF8', // Light blue active
-    accent: '#378ADD',
+    primary: '#FF6648', // Coral orange primary
+    primaryLight: '#FF8870',
+    primaryDark: '#D85A30',
+    secondary: '#FF6648',
+    accent: '#FF6648',
     success: '#38BDF8',
     danger: '#E53935', // Red
     warning: '#F5A623', // Amber
@@ -18,11 +18,11 @@ const darkColors = {
 
   // Gradient Stops
   gradient: {
-    start: '#378ADD',
-    mid: '#38BDF8',
-    end: '#5CA6F0',
-    coralStart: '#D85A30',
-    coralEnd: '#B03D1A',
+    start: '#FF6648',
+    mid: '#E5533A',
+    end: '#D85A30',
+    coralStart: '#FF6648',
+    coralEnd: '#D85A30',
   },
 
   // Background Layers (Premium Dark Navy)
@@ -40,16 +40,16 @@ const darkColors = {
     primary: '#F0F0F0', // Near white
     secondary: '#C5C7D0', // Soft grey
     muted: '#6B7280', // Grey
-    accent: '#378ADD',
+    accent: '#FF6648',
     inverse: '#0D0F1A',
-    blueTint: '#0C447C', // Deep blue
+    blueTint: '#D85A30', // Deep coral/orange
   },
 
   // Borders
   border: {
     subtle: '#2A2D3E',
     hover: '#3A3E54',
-    active: '#378ADD',
+    active: '#FF6648',
     card: '#2A2D3E',
   },
 };
@@ -57,10 +57,10 @@ const darkColors = {
 const lightColors = {
   // Brand Colors (Cream / Blue / Coral)
   brand: {
-    primary: '#0259DD', // Blue primary
-    primaryLight: '#4F8DF7',
-    primaryDark: '#0045B5',
-    secondary: '#FF6648', // Coral
+    primary: '#FF6648', // Coral orange primary
+    primaryLight: '#FF8870',
+    primaryDark: '#D85A30',
+    secondary: '#FF6648',
     accent: '#FF6648',
     success: '#10B981',
     danger: '#EF4444',
@@ -69,11 +69,11 @@ const lightColors = {
 
   // Gradient Stops
   gradient: {
-    start: '#0259DD',
-    mid: '#4F8DF7',
-    end: '#FF6648',
+    start: '#FF6648',
+    mid: '#E5533A',
+    end: '#D85A30',
     coralStart: '#FF6648',
-    coralEnd: '#E5533A',
+    coralEnd: '#D85A30',
   },
 
   // Background Layers (Soft Warm Cream Base)
@@ -83,7 +83,7 @@ const lightColors = {
     tertiary: '#F8F1EB',
     card: '#FFFFFF',
     mesh: '#FFFDFB',
-    blueTint: '#E6F1FB',
+    blueTint: '#FFF2EC',
   },
 
   // Text Colors
@@ -91,16 +91,16 @@ const lightColors = {
     primary: '#0B1C3F', // Deep Navy
     secondary: '#344A75',
     muted: '#6C82AB',
-    accent: '#0259DD',
+    accent: '#FF6648',
     inverse: '#FFFFFF',
-    blueTint: '#0045B5',
+    blueTint: '#D85A30',
   },
 
   // Borders
   border: {
-    subtle: 'rgba(2, 89, 221, 0.08)',
-    hover: 'rgba(2, 89, 221, 0.25)',
-    active: 'rgba(2, 89, 221, 0.5)',
+    subtle: 'rgba(255, 102, 72, 0.08)',
+    hover: 'rgba(255, 102, 72, 0.25)',
+    active: 'rgba(255, 102, 72, 0.5)',
     card: 'rgba(11, 28, 63, 0.06)',
   },
 };
@@ -170,14 +170,14 @@ export const shadows = {
     elevation: 5,
   },
   glow: {
-    shadowColor: '#378ADD',
+    shadowColor: '#FF6648',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.35,
     shadowRadius: 20,
     elevation: 10,
   },
   glowBlue: {
-    shadowColor: '#378ADD',
+    shadowColor: '#FF6648',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.35,
     shadowRadius: 20,

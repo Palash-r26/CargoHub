@@ -168,12 +168,28 @@ export function setupSocketHandlers(
       // Update booking
       await db.bookings.update(bookingId, { status });
 
-      // If delivered, set final fare and make driver available
+      // If delivered, set final fare and update driver earnings and availability
       if (status === 'DELIVERED') {
         await db.bookings.update(bookingId, {
           finalFare: booking.fareEstimate,
         });
-        await db.drivers.update(uid, { isAvailable: true });
+        const driver = await db.drivers.findByFirebaseUid(uid);
+        if (driver) {
+          const fare = booking.fareEstimate || 0;
+          const currentEarnings = driver.earnings || { today: 0, thisWeek: 0, thisMonth: 0, tripCount: 0 };
+          const newEarnings = {
+            today: (currentEarnings.today || 0) + fare,
+            thisWeek: (currentEarnings.thisWeek || 0) + fare,
+            thisMonth: (currentEarnings.thisMonth || 0) + fare,
+            tripCount: (currentEarnings.tripCount || 0) + 1,
+          };
+          await db.drivers.update(uid, {
+            isAvailable: true,
+            earnings: newEarnings,
+          });
+        } else {
+          await db.drivers.update(uid, { isAvailable: true });
+        }
       }
 
       // Broadcast to room

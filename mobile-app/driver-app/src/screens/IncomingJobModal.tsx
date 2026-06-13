@@ -1,12 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Modal, Vibration, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
-import MapView, { Marker, Polyline, UrlTile, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapViewOriginal, { Marker as MarkerOriginal, Polyline as PolylineOriginal, UrlTile as UrlTileOriginal, PROVIDER_GOOGLE } from 'react-native-maps';
+const MapView = MapViewOriginal as any;
+const Marker = MarkerOriginal as any;
+const Polyline = PolylineOriginal as any;
+const UrlTile = UrlTileOriginal as any;
+
 import { theme } from '../theme/theme';
 import { CountdownTimer } from '../components/CountdownTimer';
 import { useTheme } from '../context/ThemeContext';
-import { MapPin, Navigation, Package, IndianRupee, Clock, ChevronDown } from 'lucide-react-native';
+import { getMapTileUrl } from '../services/mapConfig';
+import { MapPin as MapPinOriginal, Navigation as NavigationOriginal, Package, IndianRupee, Clock as ClockOriginal, ChevronDown } from 'lucide-react-native';
+const MapPin = MapPinOriginal as any;
+const Navigation = NavigationOriginal as any;
+const Clock = ClockOriginal as any;
 
 const { height, width } = Dimensions.get('window');
+
+const darkMapStyle = [
+  { "elementType": "geometry", "stylers": [{ "color": "#0d0f1a" }] },
+  { "elementType": "labels.text.stroke", "stylers": [{ "color": "#0d0f1a" }] },
+  { "elementType": "labels.text.fill", "stylers": [{ "color": "#6b7280" }] },
+  { "featureType": "administrative", "elementType": "geometry", "stylers": [{ "color": "#2a2d3e" }] },
+  { "featureType": "poi", "stylers": [{ "visibility": "off" }] },
+  { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#161824" }] },
+  { "featureType": "road", "elementType": "geometry.stroke", "stylers": [{ "color": "#2a2d3e" }] },
+  { "featureType": "road", "elementType": "labels.text.fill", "stylers": [{ "color": "#9ca3af" }] },
+  { "featureType": "transit", "stylers": [{ "visibility": "off" }] },
+  { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#090b11" }] }
+];
 
 interface IncomingJobProps {
   visible: boolean;
@@ -19,6 +41,11 @@ export const IncomingJobModal: React.FC<IncomingJobProps> = ({ visible, job, onA
   const [loading, setLoading] = useState(false);
   const [expired, setExpired] = useState(false);
   const { themeMode } = useTheme();
+  const [mapTileUrl, setMapTileUrl] = useState('');
+
+  useEffect(() => {
+    getMapTileUrl(themeMode).then(setMapTileUrl);
+  }, [themeMode]);
 
   useEffect(() => {
     if (visible) {
@@ -78,7 +105,8 @@ export const IncomingJobModal: React.FC<IncomingJobProps> = ({ visible, job, onA
                 <MapView
                   provider={PROVIDER_GOOGLE}
                   style={styles.map}
-                  mapType="none" // Hides Google Maps default layer
+                  mapType={mapTileUrl ? 'none' : 'standard'}
+                  customMapStyle={mapTileUrl ? undefined : darkMapStyle}
                   initialRegion={{
                     latitude: (job.pickupLat + job.dropLat) / 2,
                     longitude: (job.pickupLng + job.dropLng) / 2,
@@ -91,11 +119,13 @@ export const IncomingJobModal: React.FC<IncomingJobProps> = ({ visible, job, onA
                   rotateEnabled={false}
                 >
                   {/* Ola Maps Raster Tile Layer */}
-                  <UrlTile 
-                    urlTemplate={`https://api.olamaps.io/tiles/v1/styles/default-${themeMode}-standard/{z}/{x}/{y}.png?api_key=${olaMapsKey}`}
-                    maximumZ={19}
-                    shouldReplaceMapContent={true}
-                  />
+                  {mapTileUrl ? (
+                    <UrlTile 
+                      urlTemplate={mapTileUrl}
+                      maximumZ={19}
+                      shouldReplaceMapContent={true}
+                    />
+                  ) : null}
                   <Polyline
                     coordinates={[
                       { latitude: job.pickupLat, longitude: job.pickupLng },

@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
   },
   motionLine: {
     height: 2,
-    backgroundColor: '#378ADD',
+    backgroundColor: theme.colors.brand.primary,
     borderRadius: 1,
     opacity: 0.4,
   },
@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
   cab: {
     width: 28,
     height: 28,
-    backgroundColor: '#378ADD', // Blue Cab
+    backgroundColor: theme.colors.brand.primary, // Coral Cab
     borderTopRightRadius: 8,
     borderTopLeftRadius: 2,
     borderBottomLeftRadius: 2,

@@ -6,6 +6,7 @@ import { theme } from '../theme/theme';
 import { useDriver } from '../context/DriverContext';
 import { useSocket } from '../context/SocketContext';
 import { useTheme } from '../context/ThemeContext';
+import { getMapTileUrl } from '../services/mapConfig';
 import { StepIndicator } from '../components/StepIndicator';
 import { GradientButton } from '../components/GradientButton';
 import { Header } from '../components/Header';
@@ -33,6 +34,11 @@ export const JobScreen = ({ navigation }: any) => {
   const { socket } = useSocket();
   const { themeMode } = useTheme();
   const [deliveryPhoto, setDeliveryPhoto] = useState<string | null>(null);
+  const [mapTileUrl, setMapTileUrl] = useState('');
+
+  useEffect(() => {
+    getMapTileUrl(themeMode).then(setMapTileUrl);
+  }, [themeMode]);
   
   // Animation values for Completed Celebration Screen
   const checkScale = useRef(new Animated.Value(0)).current;
@@ -249,7 +255,8 @@ export const JobScreen = ({ navigation }: any) => {
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
-        mapType="none" // Hides Google Maps default layer
+        mapType={mapTileUrl ? 'none' : 'standard'}
+        customMapStyle={mapTileUrl ? undefined : darkMapStyle}
         initialRegion={{
           latitude: activeBooking.pickupLat,
           longitude: activeBooking.pickupLng,
@@ -258,11 +265,13 @@ export const JobScreen = ({ navigation }: any) => {
         }}
         showsUserLocation
       >
-        <UrlTile 
-          urlTemplate={`https://api.olamaps.io/tiles/v1/styles/default-${themeMode}-standard/{z}/{x}/{y}.png?api_key=${(process.env.EXPO_PUBLIC_OLA_MAPS_API_KEY || '').replace(/"/g, '')}`}
-          maximumZ={19}
-          shouldReplaceMapContent={true}
-        />
+        {mapTileUrl ? (
+          <UrlTile 
+            urlTemplate={mapTileUrl}
+            maximumZ={19}
+            shouldReplaceMapContent={true}
+          />
+        ) : null}
         <Polyline
           coordinates={[
             { latitude: activeBooking.pickupLat, longitude: activeBooking.pickupLng },

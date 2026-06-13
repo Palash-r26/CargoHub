@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-nati
 import MapViewOriginal, { Marker as MarkerOriginal, Polyline as PolylineOriginal, UrlTile as UrlTileOriginal, PROVIDER_GOOGLE } from 'react-native-maps';
 import { theme } from '../theme/theme';
 import { api } from '../services/api';
+import { getMapTileUrl } from '../services/mapConfig';
 import { useTheme } from '../context/ThemeContext';
 import { useSocket } from '../context/SocketContext';
 import { useDriver } from '../context/DriverContext';
@@ -34,8 +35,13 @@ export const CustomerActiveTripScreen = ({ route, navigation }: any) => {
   const bookingId = route?.params?.bookingId || activeBooking?.id;
   const [booking, setBooking] = useState<any>(activeBooking || null);
   const [driverLocation, setDriverLocation] = useState<{lat: number, lng: number} | null>(null);
+  const [mapTileUrl, setMapTileUrl] = useState('');
   
   const { socket } = useSocket();
+
+  useEffect(() => {
+    getMapTileUrl(themeMode).then(setMapTileUrl);
+  }, [themeMode]);
 
   useEffect(() => {
     if (!bookingId) {
@@ -112,14 +118,16 @@ export const CustomerActiveTripScreen = ({ route, navigation }: any) => {
           latitudeDelta: 0.05,
           longitudeDelta: 0.05,
         }}
-        mapType="none"
+        mapType={mapTileUrl ? 'none' : 'standard'}
       >
-        <UrlTile
-          urlTemplate={`https://api.olamaps.io/tiles/v1/styles/default-${themeMode}-standard/{z}/{x}/{y}.png?api_key=${(process.env.EXPO_PUBLIC_OLA_MAPS_API_KEY || '').replace(/"/g, '')}`}
-          maximumZ={19}
-          flipY={false}
-          shouldReplaceMapContent={true}
-        />
+        {mapTileUrl ? (
+          <UrlTile
+            urlTemplate={mapTileUrl}
+            maximumZ={19}
+            flipY={false}
+            shouldReplaceMapContent={true}
+          />
+        ) : null}
         
         <Marker coordinate={{ latitude: pickupLat, longitude: pickupLng }} title="Pickup" />
         <Marker coordinate={{ latitude: dropLat, longitude: dropLng }} title="Dropoff" pinColor={theme.colors.brand.primary} />

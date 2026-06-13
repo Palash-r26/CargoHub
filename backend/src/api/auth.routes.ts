@@ -217,8 +217,13 @@ router.put('/me', verifyFirebaseToken, async (req, res) => {
     if (phone) updateData.phone = phone;
 
     await db.users.update(firebaseUid, updateData);
-    
+
+    // If driver, also update their record in the drivers table
     const user = await authService.getUserByFirebaseUid(firebaseUid);
+    if (user && user.role === 'DRIVER') {
+      await db.drivers.update(firebaseUid, updateData);
+    }
+    
     res.json({ success: true, data: user });
   } catch (error: any) {
     console.error('Update Profile Error:', error);

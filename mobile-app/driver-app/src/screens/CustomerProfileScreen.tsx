@@ -95,7 +95,7 @@ export const CustomerProfileScreen = ({ navigation }: any) => {
           
           <View style={styles.nameRow}>
             <Text style={styles.customerName}>{user?.name || 'Customer'}</Text>
-            <TouchableOpacity onPress={() => setIsEditModalVisible(true)} style={styles.editBtn}>
+            <TouchableOpacity onPress={() => { setEditName(user?.name || ''); setEditPhone(user?.phone || ''); setIsEditModalVisible(true); }} style={styles.editBtn}>
               <Edit2 size={16} color={theme.colors.brand.primary} />
             </TouchableOpacity>
           </View>
